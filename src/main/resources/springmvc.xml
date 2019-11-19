@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--开启注解扫描，只扫描Controller注解-->
+    <context:component-scan base-package="com.github.controller">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--因为Spring的Bean扫描和Spring-MVC的Bean扫描是分开的, 两者的Bean位于两个不同的Application,
+     而且Spring-MVC的Bean扫描要早于Spring的Bean扫描, 所以当Controller Bean生成完成后,
+     再执行Spring的Bean扫描,Spring会发现要被AOP代理的Controller Bean已经在容器中存在,
+     配置AOP就无效了,因此AspectJ注解自动配置应该加在spring-mvc的配置文件中->
+    <!- 启用AspectJ注解自动配置,proxy-target-class是否强制使用cglib动态代理，true表示强制-->
+    <aop:aspectj-autoproxy />
+
+    <!--配置的视图解析器对象-->
+    <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--<property name="prefix" value="/WEB-INF/pages/"/>-->
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--过滤静态资源-->
+    <!--<mvc:resources location="/vote/css" mapping="/css/**"/>
+    <mvc:resources location="/vote/images/" mapping="/images/**"/>
+    <mvc:resources location="/vote/js/" mapping="/js/**"/>-->
+    <!--开启SpringMVC注解的支持-->
+    <mvc:annotation-driven/>
+
+    <mvc:default-servlet-handler />
+</beans>
