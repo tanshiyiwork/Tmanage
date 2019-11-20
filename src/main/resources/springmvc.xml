@@ -16,7 +16,7 @@
      再执行Spring的Bean扫描,Spring会发现要被AOP代理的Controller Bean已经在容器中存在,
      配置AOP就无效了,因此AspectJ注解自动配置应该加在spring-mvc的配置文件中->
     <!- 启用AspectJ注解自动配置,proxy-target-class是否强制使用cglib动态代理，true表示强制-->
-    <aop:aspectj-autoproxy />
+    <!--<aop:aspectj-autoproxy />-->
 
     <!--配置的视图解析器对象-->
     <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
