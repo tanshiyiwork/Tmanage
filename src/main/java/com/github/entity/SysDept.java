@@ -7,16 +7,16 @@ import java.util.Objects;
 @Entity
 @Table(name = "SYS_DEPT")
 public class SysDept {
-    private String stId;
-    private String deptId;
-    private String deptName;
-    private String parentId;
-    private Integer sort;
-    private Integer level;
-    private String moudleId;
+    private String stId;//部门主键ID
+    private String deptId;//部门code
+    private String deptName;//部门名称
+    private String parentId;//上级部门
+    private Integer sort;//排序
+    private Integer level;//层级
+    private String moudleId;//模块id
     private Timestamp createTime;
     private Timestamp updateTime;
-    private String delFlag;
+    private String delFlag;//是否删除  -1：已删除  0：正常
 
     @Id
     @Column(name = "ST_ID", nullable = false, length = 50)

@@ -4,7 +4,6 @@ import com.github.security.Tuser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,7 +20,6 @@ import java.util.*;
  * @Date 2019-05-07 09:23
  * @Version 1.0
  */
-@Log4j2
 @Component
 public class JwtUtil {
 

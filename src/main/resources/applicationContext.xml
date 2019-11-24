@@ -72,9 +72,12 @@
         <property name="locations">
             <list>
                 <value>classpath:dbconfig.properties</value>
+                <value>classpath:application-prod.properties</value>
             </list>
         </property>
     </bean>
+
+    <!--<context:property-placeholder location="classpath:application-prod.properties"/>-->
 
     <!-- 定义数据源 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"

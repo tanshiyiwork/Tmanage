@@ -1,166 +1,78 @@
 package com.github.entity;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Objects;
+import java.util.List;
 
+@Data
+@EqualsAndHashCode
+@Accessors(chain = true)
 @Entity
 @Table(name = "SYS_USER")
 public class SysUser {
-    private int userId;
-    private String username;
-    private String password;
-    private Integer deptId;
-    private Integer jobId;
-    private String email;
-    private String phone;
-    private String avatar;
-    private Timestamp createTime;
-    private Timestamp updateTime;
-    private String lockFlag;
-    private String delFlag;
-
+    /**
+     * TABLE使用一个特定的数据库表格来保存主键。
+     * SEQUENCE：根据底层数据库的序列来生成主键，条件是数据库支持序列。
+     * IDENTITY：主键由数据库自动生成（主要是自动增长型）
+     * AUTO：主键由程序控制。
+     */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID", nullable = false)
-    public int getUserId() {
-        return userId;
-    }
+    private Integer userId;//主键ID
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    @Basic
     @Column(name = "USERNAME", nullable = false, length = 64)
-    public String getUsername() {
-        return username;
-    }
+    private String username;//用户名
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    @Basic
     @Column(name = "PASSWORD", nullable = false, length = 255)
-    public String getPassword() {
-        return password;
-    }
+    private String password;//密码
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Basic
     @Column(name = "DEPT_ID", nullable = true)
-    public Integer getDeptId() {
-        return deptId;
-    }
+    private Integer deptId;//部门ID
 
-    public void setDeptId(Integer deptId) {
-        this.deptId = deptId;
-    }
-
-    @Basic
     @Column(name = "JOB_ID", nullable = true)
-    public Integer getJobId() {
-        return jobId;
-    }
+    private Integer jobId;//岗位ID
 
-    public void setJobId(Integer jobId) {
-        this.jobId = jobId;
-    }
-
-    @Basic
     @Column(name = "EMAIL", nullable = true, length = 25)
-    public String getEmail() {
-        return email;
-    }
+    private String email;//邮箱
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Basic
     @Column(name = "PHONE", nullable = true, length = 20)
-    public String getPhone() {
-        return phone;
-    }
+    private String phone;//手机号
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    @Basic
     @Column(name = "AVATAR", nullable = true, length = 255)
-    public String getAvatar() {
-        return avatar;
-    }
+    private String avatar;//头像
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    @Basic
     @Column(name = "CREATE_TIME", nullable = true)
-    public Timestamp getCreateTime() {
-        return createTime;
-    }
+    private Timestamp createTime;//创建时间
 
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
-    }
-
-    @Basic
     @Column(name = "UPDATE_TIME", nullable = true)
-    public Timestamp getUpdateTime() {
-        return updateTime;
-    }
+    private Timestamp updateTime;//修改时间
 
-    public void setUpdateTime(Timestamp updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    @Basic
     @Column(name = "LOCK_FLAG", nullable = true, length = 1)
-    public String getLockFlag() {
-        return lockFlag;
-    }
+    private String lockFlag;//0-正常，1-锁定
 
-    public void setLockFlag(String lockFlag) {
-        this.lockFlag = lockFlag;
-    }
-
-    @Basic
     @Column(name = "DEL_FLAG", nullable = true, length = 1)
-    public String getDelFlag() {
-        return delFlag;
-    }
+    private String delFlag;//0-正常，1-删除
 
-    public void setDelFlag(String delFlag) {
-        this.delFlag = delFlag;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SysUser sysUser = (SysUser) o;
-        return userId == sysUser.userId &&
-                Objects.equals(username, sysUser.username) &&
-                Objects.equals(password, sysUser.password) &&
-                Objects.equals(deptId, sysUser.deptId) &&
-                Objects.equals(jobId, sysUser.jobId) &&
-                Objects.equals(email, sysUser.email) &&
-                Objects.equals(phone, sysUser.phone) &&
-                Objects.equals(avatar, sysUser.avatar) &&
-                Objects.equals(createTime, sysUser.createTime) &&
-                Objects.equals(updateTime, sysUser.updateTime) &&
-                Objects.equals(lockFlag, sysUser.lockFlag) &&
-                Objects.equals(delFlag, sysUser.delFlag);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(userId, username, password, deptId, jobId, email, phone, avatar, createTime, updateTime, lockFlag, delFlag);
-    }
+    /**
+     * 角色列表
+     */
+    @Transient
+    private List<SysRole> roleList;
+    /**
+     * 非数据库字段
+     * 部门名称
+     */
+    @Transient
+    private String deptName;
+    /**
+     * 非数据库字段
+     * 岗位名称
+     */
+    @Transient
+    private String jobName;
 }
