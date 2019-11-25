@@ -44,11 +44,11 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
         Tuser securityUser = jwtUtil.getUserFromToken(request);
         if (ObjectUtil.isNotNull(securityUser)){
-            /*Set<String> permissions = userService.findPermsByUserId(securityUser.getUserId());
+            Set<String> permissions = sysUserService.findPermsByUserId(securityUser.getUserId());
             Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(permissions.toArray(new String[0]));
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(securityUser, null, authorities);
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);*/
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
         chain.doFilter(request, response);
     }

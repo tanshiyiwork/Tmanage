@@ -19,6 +19,6 @@ public class SysUserRoleServiceImpl implements SysUserRoleService {
 
     @Override
     public List<SysUserRole> findUserRoleListByUserId(Integer userId) {
-        return sysUserRoleRepository.findAllByUserIdEquals(userId);
+        return sysUserRoleRepository.findAllByUserId(userId);
     }
 }

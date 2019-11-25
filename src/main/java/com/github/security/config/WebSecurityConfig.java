@@ -79,7 +79,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/*.html",
                         "/**/*.html",
                         "/**/*.css",
-                        "/**/*.js"
+                        "/**/*.js",
+                        "/login.jsp"
                 ).permitAll()
                 // swagger start
                 .antMatchers("/swagger-ui.html").anonymous()
@@ -94,7 +95,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()
                 .and()
-                .headers().frameOptions().disable();
+                .headers().frameOptions().disable().and()
+                .formLogin()
+                // 设置自定义登录的页面
+                .loginPage("/user-login")
+                // 登录页表单提交的 action
+                .loginProcessingUrl("/my-login")
+                //登录成功跳转
+                .defaultSuccessUrl("/login-success")
+                //登录失败跳转
+                .failureUrl("/login-fail");
         // 添加JWT filter
         httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
