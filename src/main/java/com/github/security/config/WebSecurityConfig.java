@@ -73,14 +73,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 过滤请求
                 .authorizeRequests()
                 // 对于登录login 图标 要允许匿名访问
-                .antMatchers("/login/**", "/favicon.ico").anonymous()
+                .antMatchers("/login/**").anonymous()
                 .antMatchers(
                         HttpMethod.GET,
                         "/*.html",
                         "/**/*.html",
-                        "/**/*.css",
+                        "/**/css/*.css",
                         "/**/*.js",
-                        "/login.jsp"
+                        "/**/scripts/*.js",
+                        "/**/img/**",
+                        "/**/vendor/**",
+                        "/pages/login.jsp"
                 ).permitAll()
                 // swagger start
                 .antMatchers("/swagger-ui.html").anonymous()
@@ -98,7 +101,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable().and()
                 .formLogin()
                 // 设置自定义登录的页面
-                .loginPage("/user-login")
+                .loginPage("/login")
                 // 登录页表单提交的 action
                 .loginProcessingUrl("/my-login")
                 //登录成功跳转

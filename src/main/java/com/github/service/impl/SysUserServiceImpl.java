@@ -1,5 +1,6 @@
 package com.github.service.impl;
 
+import com.github.constant.TConstant;
 import com.github.dto.UserDto;
 import com.github.entity.SysUser;
 import com.github.entity.SysUserRole;
@@ -15,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,6 +41,9 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Autowired
     private SysMenuRepository sysMenuRepository;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Resource
     private AuthenticationManager authenticationManager;
@@ -124,7 +129,9 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public String login(String userName, String passWord, String captcha, HttpServletRequest request) {
-        String kaptcha = null;
+        // 验证验证码
+        // 从redis中获取之前保存的验证码跟前台传来的验证码进行匹配
+        Object kaptcha = redisTemplate.opsForValue().get(TConstant.T_IMAGE_SESSION_KEY);
         if (kaptcha == null) {
             throw new BaseException("验证码已失效");
         }

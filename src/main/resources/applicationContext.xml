@@ -73,11 +73,10 @@
             <list>
                 <value>classpath:dbconfig.properties</value>
                 <value>classpath:application-prod.properties</value>
+                <value>classpath:redis.properties</value>
             </list>
         </property>
     </bean>
-
-    <!--<context:property-placeholder location="classpath:application-prod.properties"/>-->
 
     <!-- 定义数据源 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
@@ -108,9 +107,56 @@
         <property name="logAbandoned" value="${logAbandoned}" />
     </bean>
 
-    <!--3.整合spring dataJpa-->
+    <!--整合spring dataJpa-->
     <jpa:repositories base-package="com.github.repo"
                       repository-impl-postfix="Impl" entity-manager-factory-ref="entityManagerFactory"
                       transaction-manager-ref="transactionManager">
     </jpa:repositories>
+
+    <!--redis的配置开始-->
+    <!--redis链接密码-->
+    <bean id="redisPassword" class="org.springframework.data.redis.connection.RedisPassword">
+        <constructor-arg name="thePassword" value="${redis.pass}"></constructor-arg>
+    </bean>
+
+    <!--spring-data-redis2.0以上的配置-->
+    <bean id="redisStandaloneConfiguration" class="org.springframework.data.redis.connection.RedisStandaloneConfiguration">
+        <property name="hostName" value="${redis.host}"/>
+        <property name="port" value="${redis.port}"/>
+        <property name="password" ref="redisPassword" />
+        <property name="database" value="${redis.dbIndex}"/>
+    </bean>
+
+    <!--配置jedis链接工厂 spring-data-redis2.0中
+        建议改为构造器传入一个RedisStandaloneConfiguration  单机
+                            RedisSentinelConfiguration  主从复制
+                            RedisClusterConfiguration  集群-->
+    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <constructor-arg name="standaloneConfig" ref="redisStandaloneConfiguration"></constructor-arg>
+    </bean>
+
+    <!--手动设置 key  与 value的序列化方式-->
+    <bean id="keySerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+    <bean id="valueSerializer" class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer"/>
+
+    <!--配置jedis模板  -->
+    <bean id = "redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory" />
+        <property name="keySerializer" ref="keySerializer" />
+        <property name="valueSerializer" ref="valueSerializer" />
+        <property name="hashKeySerializer" ref="keySerializer" />
+        <property name="hashValueSerializer" ref="valueSerializer" />
+    </bean>
+
+    <!--也可以StringRedisTemplate  专注于String的操作  -->
+    <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+        <!--在StringRedisTemplate与redisTemplate不同,可以直接造构造器中传入ConnectionFactory-->
+        <constructor-arg name="connectionFactory" ref="jedisConnectionFactory"></constructor-arg>
+        <property name="keySerializer" ref="keySerializer" />
+        <property name="valueSerializer" ref="valueSerializer" />
+        <property name="hashKeySerializer" ref="keySerializer" />
+        <property name="hashValueSerializer" ref="valueSerializer" />
+    </bean>
+    <!--redis的配置结束-->
+
 </beans>

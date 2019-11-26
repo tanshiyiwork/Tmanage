@@ -25,11 +25,12 @@
     </bean>
 
     <!--过滤静态资源-->
-    <!--<mvc:resources location="/vote/css" mapping="/css/**"/>
-    <mvc:resources location="/vote/images/" mapping="/images/**"/>
-    <mvc:resources location="/vote/js/" mapping="/js/**"/>-->
+    <mvc:resources location="/assets/css" mapping="/css/**"/>
+    <mvc:resources location="/assets/img/" mapping="/img/**"/>
+    <mvc:resources location="/assets/scripts/" mapping="/scripts/**"/>
+    <mvc:resources location="/assets/vendor/" mapping="/vendor/**"/>
     <!--开启SpringMVC注解的支持-->
     <mvc:annotation-driven/>
 
-    <mvc:default-servlet-handler />
+    <mvc:default-servlet-handler/>
 </beans>

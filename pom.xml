@@ -104,6 +104,19 @@
         </dependency>
         <!-- springdatajpa end -->
 
+        <!--redis引用jar-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>2.1.8.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+
         <!-- spring-security -->
         <dependency>
             <groupId>org.springframework.security</groupId>
