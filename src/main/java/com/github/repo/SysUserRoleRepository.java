@@ -3,8 +3,10 @@ package com.github.repo;
 import com.github.entity.SysUserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SysUserRoleRepository extends JpaRepository<SysUserRole,Integer> {
 
@@ -13,9 +15,9 @@ public interface SysUserRoleRepository extends JpaRepository<SysUserRole,Integer
     public List<SysUserRole> findAllByUserId(Integer userId);
 
     @Query(value = "SELECT r.role_name, ur.role_id" +
-            "FROM sys_role r" +
-            "LEFT JOIN sys_user_role ur ON r.role_id = ur.role_id" +
-            "LEFT JOIN sys_user u ON u.user_id = ur.user_id" +
-            "WHERE u.user_id = #{userId}",nativeQuery = true)
-    List<SysUserRole> selectUserRoleListByUserId(Integer userId);
+            " FROM SYS_ROLE r" +
+            " LEFT JOIN SYS_USER_ROLE ur ON r.role_id = ur.role_id" +
+            " LEFT JOIN SYS_USER u ON u.user_id = ur.user_id" +
+            " WHERE u.user_id = :userId",nativeQuery = true)
+    List<Map<String,Object>> selectUserRoleListByUserId(@Param("userId")Integer userId);
 }

@@ -13,11 +13,11 @@ public interface SysMenuRepository extends JpaRepository<SysMenu, Integer> , Jpa
     public SysMenu findByParentId(Integer parentId);
 
     @Query(nativeQuery = true,value = "SELECT m.perms" +
-            "FROM sys_menu m, sys_user u, sys_user_role ur, sys_role_menu rm" +
-            "WHERE (u.user_id = :userId" +
-            "AND u.user_id = ur.user_id" +
-            "AND ur.role_id = rm.role_id" +
-            "AND rm.menu_id = m.menu_id)")
+            " FROM SYS_MENU m, SYS_USER u, SYS_USER_ROLE ur, SYS_ROLE_MENU rm" +
+            " WHERE (u.user_id = :userId" +
+            " AND u.user_id = ur.user_id" +
+            " AND ur.role_id = rm.role_id" +
+            " AND rm.menu_id = m.menu_id)")
     public List<String> findPermsByUserId(@Param("userId")Integer userId);
 
     public List<SysMenu> findAllByMenuIdIn(List<Integer> menuIds);

@@ -54,7 +54,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="captcha" class="control-label sr-only">验证码</label>
-                                <input type="password" class="form-control" name="captcha" id="captcha" placeholder="验证码">
+                                <input type="text" class="form-control" name="captcha" id="captcha" placeholder="验证码">
                             </div>
                             <div><span><img src="/captcha.jpg" onclick="changeImage(this)"></span></div>
                             <div class="form-group clearfix">
