@@ -14,10 +14,10 @@ public interface SysUserRoleRepository extends JpaRepository<SysUserRole,Integer
 
     public List<SysUserRole> findAllByUserId(Integer userId);
 
-    @Query(value = "SELECT r.role_name, ur.role_id" +
+    @Query(value = "SELECT ur.role_id" +
             " FROM SYS_ROLE r" +
             " LEFT JOIN SYS_USER_ROLE ur ON r.role_id = ur.role_id" +
             " LEFT JOIN SYS_USER u ON u.user_id = ur.user_id" +
             " WHERE u.user_id = :userId",nativeQuery = true)
-    List<Map<String,Object>> selectUserRoleListByUserId(@Param("userId")Integer userId);
+    List<String> selectUserRoleListByUserId(@Param("userId")Integer userId);
 }

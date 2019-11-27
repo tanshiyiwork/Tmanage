@@ -171,18 +171,10 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public Set<String> findRoleIdByUserId(Integer userId) {
-        Set<String> set = new HashSet<>();
-        List<Map<String,Object>> list = sysUserRoleRepository.selectUserRoleListByUserId(userId);
-        for(int i=0;i<list.size();i++){
-            Map<String,Object> map = list.get(i);
-            Integer role_id = (Integer)map.get("role_id");
-            set.add("ROLE_"+role_id);
-        }
-        return set;
-        /*return sysUserRoleRepository.selectUserRoleListByUserId(userId)
+        return sysUserRoleRepository.selectUserRoleListByUserId(userId)
                 .stream()
-                .map(sysUserRole -> "ROLE_"+sysUserRole.getRoleId())
-                .collect(Collectors.toSet());*/
+                .map(item -> "ROLE_"+item)
+                .collect(Collectors.toSet());
     }
 
 
