@@ -7,21 +7,20 @@ import com.github.utils.R;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @Api(value = "主页模块")
-@RestController
+@Controller
 public class IndexController {
 
     @Autowired
@@ -62,4 +61,23 @@ public class IndexController {
     public R login(String username, String password, String captcha, HttpServletRequest request){
         return R.ok(sysUserService.login(username,password,captcha,request));
     }
+
+    /**
+     * 登录成功跳转页面
+     * @return
+     */
+    @RequestMapping(value = "/loginSuccess")
+    public String loginSuccess(){
+        return "index";
+    }
+
+    /**
+     * 登录失败跳转页面
+     * @return
+     */
+    @RequestMapping(value = "/loginFail")
+    public String loginFail(){
+        return "login";
+    }
+
 }

@@ -93,6 +93,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // swagger end
                 .antMatchers("/captcha.jpg")
                 .permitAll()
+                .antMatchers("/loginSuccess").permitAll()
+                .antMatchers("/loginFail").permitAll()
                 // 访问/user 需要拥有admin权限
                 //  .antMatchers("/user").hasAuthority("ROLE_ADMIN")
                 // 除上面外的所有请求全部需要鉴权认证
@@ -100,14 +102,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .headers().frameOptions().disable().and()
                 .formLogin()
-                // 设置自定义登录的页面
-                .loginPage("/login")
-                // 登录页表单提交的 action
-                .loginProcessingUrl("/my-login")
                 //登录成功跳转
-                .defaultSuccessUrl("/login-success")
+                .successForwardUrl("/loginSuccess")
                 //登录失败跳转
-                .failureUrl("/login-fail");
+                .failureUrl("/loginFail");
         // 添加JWT filter
         httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }

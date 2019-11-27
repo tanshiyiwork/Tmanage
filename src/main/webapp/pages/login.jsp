@@ -43,7 +43,7 @@
                             <div class="logo text-center"><img src="../assets/img/logo-dark.png" alt="Klorofil Logo"></div>
                             <p class="lead">系统登录</p>
                         </div>
-                        <form class="form-auth-small" action="/login">
+                        <form class="form-auth-small" method="post" action="/login">
                             <div class="form-group">
                                 <label for="username" class="control-label sr-only">账号</label>
                                 <input type="text" class="form-control" name="username" id="username" placeholder="账号">
