@@ -3,11 +3,12 @@ package com.github.security.config;
 import com.github.security.UserDetailsServiceImpl;
 import com.github.security.filter.JwtAuthenticationTokenFilter;
 import com.github.security.handle.AuthenticationEntryPointImpl;
+import com.github.security.handle.AuthenticationFailureHandlerImpl;
+import com.github.security.handle.AuthenticationSuccessHandlerImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -73,9 +74,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 过滤请求
                 .authorizeRequests()
                 // 对于登录login 图标 要允许匿名访问
-                .antMatchers("/login/**").anonymous()
+                //.antMatchers("/login/**").anonymous()
                 .antMatchers(
-                        HttpMethod.GET,
+                        /*HttpMethod.GET,*/
                         "/*.html",
                         "/**/*.html",
                         "/**/css/*.css",
@@ -83,7 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/scripts/*.js",
                         "/**/img/**",
                         "/**/vendor/**",
-                        "/pages/login.jsp"
+                        "/pages/dispatch.jsp"
                 ).permitAll()
                 // swagger start
                 .antMatchers("/swagger-ui.html").anonymous()
@@ -91,21 +92,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/webjars/**").anonymous()
                 .antMatchers("/*/api-docs").anonymous()
                 // swagger end
-                .antMatchers("/captcha.jpg")
-                .permitAll()
-                .antMatchers("/loginSuccess").permitAll()
-                .antMatchers("/loginFail").permitAll()
+                .antMatchers("/captcha.jpg").permitAll()
+                //.antMatchers("/loginSuccess").permitAll()
+                //.antMatchers("/loginFail").permitAll()
                 // 访问/user 需要拥有admin权限
                 //  .antMatchers("/user").hasAuthority("ROLE_ADMIN")
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()
                 .and()
                 .headers().frameOptions().disable().and()
-                .formLogin()
+                .formLogin().loginPage("/toLogin")
+                .loginProcessingUrl("/login")
+                .permitAll()
+                .successHandler(new AuthenticationSuccessHandlerImpl())
+                .failureHandler(new AuthenticationFailureHandlerImpl())
                 //登录成功跳转
-                .successForwardUrl("/loginSuccess")
+                //.successForwardUrl("/loginSuccess")
                 //登录失败跳转
-                .failureUrl("/loginFail");
+                //.failureUrl("/toLogin")
+                .and()
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/toLogin").and()
+                .rememberMe().tokenValiditySeconds(60*60);
         // 添加JWT filter
         httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }

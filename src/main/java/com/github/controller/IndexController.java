@@ -59,7 +59,8 @@ public class IndexController {
      */
     @RequestMapping(value = "/login")
     public R login(String username, String password, String captcha, HttpServletRequest request){
-        return R.ok(sysUserService.login(username,password,captcha,request));
+        String data = sysUserService.login(username,password,captcha,request);
+        return R.ok(data);
     }
 
     /**
@@ -72,11 +73,11 @@ public class IndexController {
     }
 
     /**
-     * 登录失败跳转页面
+     * 跳转登录页面
      * @return
      */
-    @RequestMapping(value = "/loginFail")
-    public String loginFail(){
+    @RequestMapping(value = "/toLogin")
+    public String toLogin(){
         return "login";
     }
 

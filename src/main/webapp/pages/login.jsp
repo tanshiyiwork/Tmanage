@@ -30,6 +30,22 @@
         function changeImage(obj) {
             $(obj).attr("src","/captcha.jpg");
         }
+        function toLogin() {
+            $.ajax({
+                url:"/login",
+                type:"post",
+                data:$("#loginForm").serialize(),
+                dataType: "json",
+                success: function(data){
+                    alert(data);
+                    var str = JSON.stringify(data);
+                    alert(str);
+                },
+                error:function(e){
+                    console.log(e);
+                }
+            });
+        }
     </script>
 </head>
 <body>
@@ -43,7 +59,7 @@
                             <div class="logo text-center"><img src="../assets/img/logo-dark.png" alt="Klorofil Logo"></div>
                             <p class="lead">系统登录</p>
                         </div>
-                        <form class="form-auth-small" method="post" action="/login">
+                        <form class="form-auth-small" method="post" id="loginForm" action="/login">
                             <div class="form-group">
                                 <label for="username" class="control-label sr-only">账号</label>
                                 <input type="text" class="form-control" name="username" id="username" placeholder="账号">
@@ -59,11 +75,12 @@
                             <div><span><img src="/captcha.jpg" onclick="changeImage(this)"></span></div>
                             <div class="form-group clearfix">
                                 <label class="fancy-checkbox element-left">
-                                    <input type="checkbox">
+                                    <input type="checkbox" value="true" name="remember-me">
                                     <span>记住我</span>
                                 </label>
                             </div>
                             <button type="submit" class="btn btn-primary btn-lg btn-block">登录</button>
+                            <%--<button class="btn btn-primary btn-lg btn-block" onclick="toLogin()">登录</button>--%>
                             <div class="bottom">
                                 <span class="helper-text"><i class="fa fa-lock"></i> <a href="#">忘记密码</a></span>
                             </div>
