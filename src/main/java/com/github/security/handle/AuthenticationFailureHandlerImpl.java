@@ -12,6 +12,6 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
         //登录失败，直接重定向至登录页面重新登录
-        httpServletResponse.sendRedirect("/pages/login.jsp");
+        /*httpServletResponse.sendRedirect("/pages/login.jsp");*/
     }
 }

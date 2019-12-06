@@ -3,8 +3,6 @@ package com.github.security.config;
 import com.github.security.UserDetailsServiceImpl;
 import com.github.security.filter.JwtAuthenticationTokenFilter;
 import com.github.security.handle.AuthenticationEntryPointImpl;
-import com.github.security.handle.AuthenticationFailureHandlerImpl;
-import com.github.security.handle.AuthenticationSuccessHandlerImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -74,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 过滤请求
                 .authorizeRequests()
                 // 对于登录login 图标 要允许匿名访问
-                //.antMatchers("/login/**").anonymous()
+                .antMatchers("/login/**", "/favicon.ico").anonymous()
                 .antMatchers(
                         /*HttpMethod.GET,*/
                         "/*.html",
@@ -83,8 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js",
                         "/**/scripts/*.js",
                         "/**/img/**",
-                        "/**/vendor/**",
-                        "/pages/dispatch.jsp"
+                        "/**/vendor/**"
                 ).permitAll()
                 // swagger start
                 .antMatchers("/swagger-ui.html").anonymous()
@@ -100,19 +97,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()
                 .and()
-                .headers().frameOptions().disable().and()
-                .formLogin().loginPage("/toLogin")
-                .loginProcessingUrl("/login")
-                .permitAll()
-                .successHandler(new AuthenticationSuccessHandlerImpl())
-                .failureHandler(new AuthenticationFailureHandlerImpl())
+                .headers().frameOptions().disable();
+                //.and()
+                //.formLogin().loginPage("/toLogin")
+                //.loginProcessingUrl("/login")
+                //.permitAll()
+                //.successHandler(new AuthenticationSuccessHandlerImpl())
+                //.failureHandler(new AuthenticationFailureHandlerImpl())
                 //登录成功跳转
                 //.successForwardUrl("/loginSuccess")
                 //登录失败跳转
                 //.failureUrl("/toLogin")
-                .and()
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/toLogin").and()
-                .rememberMe().tokenValiditySeconds(60*60);
+                //.and()
+                //.logout().logoutUrl("/logout").logoutSuccessUrl("/toLogin");
+                //.and().rememberMe().tokenValiditySeconds(60*60);
         // 添加JWT filter
         httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }

@@ -14,10 +14,12 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-        Tuser userDetail = (Tuser) authentication.getPrincipal();
+        /*Tuser userDetail = (Tuser) authentication.getPrincipal();
         String token = JwtUtil.generateToken(userDetail);
         System.out.println("token:"+token);
+        httpServletRequest.setAttribute("token",token);
         // 登录成功重定向到home界面,这里先采用参数传递
-        httpServletResponse.sendRedirect("/pages/dispatch.jsp?token="+token);
+        httpServletRequest.getRequestDispatcher("/pages/dispatch.jsp").forward(httpServletRequest,httpServletResponse);*/
+        //httpServletResponse.sendRedirect("/pages/dispatch.jsp");
     }
 }
