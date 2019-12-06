@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -20,7 +21,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @Api(value = "主页模块")
-@Controller
+@RestController
 public class IndexController {
 
     @Autowired
@@ -61,24 +62,6 @@ public class IndexController {
     public R login(String username, String password, String captcha, HttpServletRequest request){
         String data = sysUserService.login(username,password,captcha,request);
         return R.ok(data);
-    }
-
-    /**
-     * 登录成功跳转页面
-     * @return
-     */
-    @RequestMapping(value = "/loginSuccess")
-    public String loginSuccess(){
-        return "index";
-    }
-
-    /**
-     * 跳转登录页面
-     * @return
-     */
-    @RequestMapping(value = "/toLogin")
-    public String toLogin(){
-        return "login";
     }
 
 }

@@ -133,13 +133,13 @@ public class SysUserServiceImpl implements SysUserService {
     public String login(String userName, String passWord, String captcha, HttpServletRequest request) {
         // 验证验证码
         // 从redis中获取之前保存的验证码跟前台传来的验证码进行匹配
-        Object kaptcha = redisTemplate.opsForValue().get(TConstant.T_IMAGE_SESSION_KEY);
+        /*Object kaptcha = redisTemplate.opsForValue().get(TConstant.T_IMAGE_SESSION_KEY);
         if (kaptcha == null) {
             throw new BaseException("验证码已失效");
         }
         if (!captcha.toLowerCase().equals(kaptcha)) {
             throw new BaseException("验证码错误");
-        }
+        }*/
         //用户验证
         Authentication authentication = null;
         try {

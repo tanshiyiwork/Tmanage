@@ -7,10 +7,10 @@ import java.util.Objects;
 @Entity
 @Table(name = "SYS_DEPT")
 public class SysDept {
-    private String stId;//部门主键ID
-    private String deptId;//部门code
+    private Integer deptId;//部门主键ID
+    private String deptCode;//部门编号
     private String deptName;//部门名称
-    private String parentId;//上级部门
+    private Integer parentId;//上级部门
     private Integer sort;//排序
     private Integer level;//层级
     private String moudleId;//模块id
@@ -19,23 +19,24 @@ public class SysDept {
     private String delFlag;//是否删除  -1：已删除  0：正常
 
     @Id
-    @Column(name = "ST_ID", nullable = false, length = 50)
-    public String getStId() {
-        return stId;
-    }
-
-    public void setStId(String stId) {
-        this.stId = stId;
-    }
-
-    @Basic
-    @Column(name = "DEPT_ID", nullable = true, length = 100)
-    public String getDeptId() {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "DEPT_ID", nullable = false, length = 12)
+    public Integer getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(String deptId) {
+    public void setDeptId(Integer deptId) {
         this.deptId = deptId;
+    }
+
+    @Basic
+    @Column(name = "DEPT_CODE", nullable = true, length = 100)
+    public String getDeptCode() {
+        return deptCode;
+    }
+
+    public void setDeptCode(String deptCode) {
+        this.deptCode = deptCode;
     }
 
     @Basic
@@ -49,12 +50,12 @@ public class SysDept {
     }
 
     @Basic
-    @Column(name = "PARENT_ID", nullable = true, length = 100)
-    public String getParentId() {
+    @Column(name = "PARENT_ID", nullable = true, length = 12)
+    public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(String parentId) {
+    public void setParentId(Integer parentId) {
         this.parentId = parentId;
     }
 
@@ -123,8 +124,8 @@ public class SysDept {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SysDept sysDept = (SysDept) o;
-        return Objects.equals(stId, sysDept.stId) &&
-                Objects.equals(deptId, sysDept.deptId) &&
+        return Objects.equals(deptId, sysDept.deptId) &&
+                Objects.equals(deptCode, sysDept.deptCode) &&
                 Objects.equals(deptName, sysDept.deptName) &&
                 Objects.equals(parentId, sysDept.parentId) &&
                 Objects.equals(sort, sysDept.sort) &&
@@ -137,6 +138,6 @@ public class SysDept {
 
     @Override
     public int hashCode() {
-        return Objects.hash(stId, deptId, deptName, parentId, sort, level, moudleId, createTime, updateTime, delFlag);
+        return Objects.hash(deptId, deptCode, deptName, parentId, sort, level, moudleId, createTime, updateTime, delFlag);
     }
 }
