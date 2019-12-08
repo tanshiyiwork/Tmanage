@@ -10,7 +10,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -21,7 +20,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @Api(value = "主页模块")
-@RestController
+@Controller
 public class IndexController {
 
     @Autowired

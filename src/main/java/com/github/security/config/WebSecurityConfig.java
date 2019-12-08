@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.RememberMeAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,7 +16,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 
 /**
  * @Classname WebSecurityConfig
@@ -29,6 +31,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private static final String SECRET = "scio@2019";
 
     @Autowired
     private AuthenticationEntryPointImpl unauthorizedHandler;
@@ -54,6 +58,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
+     * RememberMeAuthenticationProvider.
+     *
+     * @return
+     */
+    @Bean
+    public RememberMeAuthenticationProvider rememberMeAuthenticationProvider() {
+        return new RememberMeAuthenticationProvider(SECRET);
+    }
+
+    /**
+     * TokenBasedRememberMeServices.
+     *
+     * @return
+     */
+    @Bean("tokenBaseRememberMeServices")
+    public TokenBasedRememberMeServices tokenBasedRememberMeServices() {
+        TokenBasedRememberMeServices rememberMeServices =
+                new TokenBasedRememberMeServices(SECRET, userDetailsService);
+        rememberMeServices.setAlwaysRemember(false);
+        rememberMeServices.setCookieName("remember-me");
+        rememberMeServices.setTokenValiditySeconds(AbstractRememberMeServices.TWO_WEEKS_S);
+        return rememberMeServices;
+    }
+
+    /**
      * 配置策略
      *
      * @param httpSecurity
@@ -61,18 +90,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-
         httpSecurity
                 // 由于使用的是JWT，我们这里不需要csrf
                 .csrf().disable()
                 // 认证失败处理类
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                // 基于token，所以不需要session
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                // 如果需要就创建一个Session（默认）
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).and()
                 // 过滤请求
                 .authorizeRequests()
-                // 对于登录login 图标 要允许匿名访问
-                .antMatchers("/login/**", "/favicon.ico").anonymous()
                 .antMatchers(
                         /*HttpMethod.GET,*/
                         "/*.html",
@@ -83,38 +109,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/img/**",
                         "/**/vendor/**"
                 ).permitAll()
-                // swagger start
-                .antMatchers("/swagger-ui.html").anonymous()
-                .antMatchers("/swagger-resources/**").anonymous()
-                .antMatchers("/webjars/**").anonymous()
-                .antMatchers("/*/api-docs").anonymous()
-                // swagger end
                 .antMatchers("/captcha.jpg").permitAll()
-                //.antMatchers("/loginSuccess").permitAll()
-                //.antMatchers("/loginFail").permitAll()
                 // 访问/user 需要拥有admin权限
-                //  .antMatchers("/user").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/**").hasRole("5")
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()
                 .and()
-                .headers().frameOptions().disable();
-                //.and()
-                //.formLogin().loginPage("/toLogin")
-                //.loginProcessingUrl("/login")
-                //.permitAll()
-                //.successHandler(new AuthenticationSuccessHandlerImpl())
-                //.failureHandler(new AuthenticationFailureHandlerImpl())
-                //登录成功跳转
-                //.successForwardUrl("/loginSuccess")
-                //登录失败跳转
-                //.failureUrl("/toLogin")
-                //.and()
-                //.logout().logoutUrl("/logout").logoutSuccessUrl("/toLogin");
-                //.and().rememberMe().tokenValiditySeconds(60*60);
+                .headers().frameOptions().disable()
+                .and()
+                .formLogin().loginPage("/pages/login.jsp")
+                .loginProcessingUrl("/login")
+                .permitAll()
+                .successForwardUrl("/pages/index.jsp")
+                .failureForwardUrl("/pages/login.jsp")
+                .and()
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/pages/login.jsp");
+        httpSecurity.rememberMe().rememberMeServices(tokenBasedRememberMeServices())
+                .and()
+                .authenticationProvider(rememberMeAuthenticationProvider());
         // 添加JWT filter
-        httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        //httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
+    /**
+     * 认证用户的来源（内存或者是数据库）
+     * @param auth
+     * @throws Exception
+     */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth

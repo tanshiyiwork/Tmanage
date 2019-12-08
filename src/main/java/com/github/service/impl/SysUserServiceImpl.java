@@ -1,6 +1,5 @@
 package com.github.service.impl;
 
-import com.github.constant.TConstant;
 import com.github.dto.UserDto;
 import com.github.entity.SysUser;
 import com.github.entity.SysUserRole;
@@ -25,9 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 

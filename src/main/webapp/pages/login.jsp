@@ -30,22 +30,6 @@
         function changeImage(obj) {
             $(obj).attr("src","/captcha.jpg");
         }
-        function toLogin() {
-            $.ajax({
-                url:"/login",
-                type:"post",
-                data:$("#loginForm").serialize(),
-                dataType: "json",
-                success: function(data){
-                    alert(data);
-                    var str = JSON.stringify(data);
-                    alert(str);
-                },
-                error:function(e){
-                    console.log(e);
-                }
-            });
-        }
     </script>
 </head>
 <body>
@@ -72,7 +56,7 @@
                                 <label for="captcha" class="control-label sr-only">验证码</label>
                                 <input type="text" class="form-control" name="captcha" id="captcha" placeholder="验证码">
                             </div>
-                            <div><span><img src="/captcha.jpg" onclick="changeImage(this)"></span></div>
+                            <div><%--<span><img src="/captcha.jpg" onclick="changeImage(this)"></span>--%></div>
                             <div class="form-group clearfix">
                                 <label class="fancy-checkbox element-left">
                                     <input type="checkbox" value="true" name="remember-me">
@@ -80,7 +64,6 @@
                                 </label>
                             </div>
                             <button type="submit" class="btn btn-primary btn-lg btn-block">登录</button>
-                            <%--<button class="btn btn-primary btn-lg btn-block" onclick="toLogin()">登录</button>--%>
                             <div class="bottom">
                                 <span class="helper-text"><i class="fa fa-lock"></i> <a href="#">忘记密码</a></span>
                             </div>

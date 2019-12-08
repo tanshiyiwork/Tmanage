@@ -83,4 +83,9 @@ public class SysMenuServiceImpl implements SysMenuService {
         Tutil.findChildren(sysMenus, menus, 0);
         return sysMenus;
     }
+
+    @Override
+    public SysMenu saveMenu(SysMenu sysMenu) {
+        return sysMenuRepository.save(sysMenu);
+    }
 }

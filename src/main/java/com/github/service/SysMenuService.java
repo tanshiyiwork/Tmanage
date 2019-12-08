@@ -26,4 +26,11 @@ public interface SysMenuService {
      * @return
      */
     List<SysMenu> selectMenuTree(Integer uid);
+
+    /**
+     * 添加菜单
+     * @param sysMenu
+     * @return
+     */
+    SysMenu saveMenu(SysMenu sysMenu);
 }
