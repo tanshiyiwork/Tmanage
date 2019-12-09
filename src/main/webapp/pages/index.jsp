@@ -209,7 +209,7 @@
         <div class="sidebar-scroll">
             <nav>
                 <ul class="nav">
-                    <li><a href="${pageContext.request.contextPath}/pages/elements.jsp" target="mainIframe" class="active"><i class="lnr lnr-home"></i> <span>主页</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/pages/dept.jsp" target="mainIframe" class="active"><i class="lnr lnr-home"></i> <span>主页</span></a></li>
                     <li><a href="${pageContext.request.contextPath}/pages/elements.jsp" target="mainIframe" class=""><i class="lnr lnr-code"></i> <span>元素</span></a></li>
                     <li><a href="${pageContext.request.contextPath}/pages/charts.jsp" target="mainIframe" class=""><i class="lnr lnr-chart-bars"></i> <span>图表</span></a></li>
                     <li><a href="${pageContext.request.contextPath}/pages/panels.jsp" target="mainIframe" class=""><i class="lnr lnr-cog"></i> <span>面板</span></a></li>
