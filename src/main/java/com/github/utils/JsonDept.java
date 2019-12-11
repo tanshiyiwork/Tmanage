@@ -1,10 +1,11 @@
 package com.github.utils;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.entity.SysDept;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
 
 @Getter
 @Setter
@@ -14,16 +15,17 @@ public class JsonDept {
     private Integer id;
     private String name;
     private boolean open;
-    private JSONArray children;
+    private Integer pid;
     private boolean checked;
 
-    public static JsonDept transt(SysDept sysDept,JSONArray children){
+    public static JsonDept transfer(SysDept sysDept){
         JsonDept dept = new JsonDept();
         dept.id = sysDept.getDeptId();
         dept.name = sysDept.getDeptName();
         dept.open = true;
-        dept.children = children;
+        dept.pid = sysDept.getParentId();
         dept.checked = true;
         return dept;
     }
+
 }

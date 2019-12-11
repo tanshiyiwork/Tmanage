@@ -9,46 +9,14 @@
 <html>
 <head>
     <title>Title</title>
-    <jsp:include page="../include/headInclude.jsp"/>
+    <%@include file="../include/headInclude.jsp"%>
     <script>
-        layui.config({
-            base: '${pageContext.request.contextPath}/plugins/module/'
-        }).extend({
-            treeSelect: 'treeSelect/treeSelect'
-        });
-        layui.use(['treeSelect','form'], function () {
-            var treeSelect= layui.treeSelect;
-            treeSelect.render({
-                // 选择器
-                elem: '#tree',
-                // 数据
-                data: '${pageContext.request.contextPath}/dept/getDetpTree',
-                // 异步加载方式：get/post，默认get
-                type: 'get',
-                // 占位符
-                placeholder: '修改默认提示信息',
-                // 是否开启搜索功能：true/false，默认false
-                search: true,
-                // 点击回调
-                click: function(d){
-                    console.log(d);
-                },
-                // 加载完成后的回调函数
-                success: function (d) {
-                    console.log(d);
-//                选中节点，根据id筛选
-//                treeSelect.checkNode('tree', 3);
-
-//                获取zTree对象，可以调用zTree方法
-//                var treeObj = treeSelect.zTree('tree');
-//                console.log(treeObj);
-
-//                刷新树结构
-//                treeSelect.refresh();
-                }
+        $(function () {
+            $('#tree').combotree({
+                url: <%=path%>+"dept/getDetpTree",
+                required: true
             });
         });
-
     </script>
 </head>
 <body>
@@ -72,7 +40,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">测试</label>
                         <div class="layui-input-block">
-                            <input type="text" id="tree" lay-filter="tree" class="layui-input">
+                            <input id="tree" class="layui-input">
                         </div>
                     </div>
                 </form>

@@ -217,6 +217,12 @@
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
         </dependency>
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <classifier>jdk15</classifier>
+        </dependency>
         <!--springmvc默认使用的是jackson来解析json-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -273,7 +279,17 @@
             <artifactId>javax.el</artifactId>
             <version>2.2.4</version>
         </dependency>
-
+        <!-- jstl标签库-->
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+        </dependency>
         <!-- servlet api -->
         <dependency>
             <groupId>javax.servlet</groupId>

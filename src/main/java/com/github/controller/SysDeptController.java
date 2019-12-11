@@ -1,19 +1,19 @@
 package com.github.controller;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.github.entity.SysDept;
 import com.github.service.SysDeptService;
+import com.github.utils.JsonDept;
 import com.github.utils.R;
 import io.swagger.annotations.Api;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Api(value="部门模块")
-@RestController
+@Controller
 @RequestMapping("/dept")
 public class SysDeptController {
 
@@ -31,28 +31,10 @@ public class SysDeptController {
     }
 
     @RequestMapping("/getDetpTree")
+    @ResponseBody
     public JSONArray getDetpTree(){
-        JSONArray jsonArray = new JSONArray();
-        JSONArray children = new JSONArray();
-        JSONObject son = new JSONObject();
-        son.put("id","2");
-        son.put("name","1");
-        son.put("open",true);
-        son.put("checked",true);
-        JSONObject son1 = new JSONObject();
-        son1.put("id","3");
-        son1.put("name","2");
-        son1.put("open",false);
-        son1.put("checked",true);
-        children.add(son);
-        children.add(son1);
-        JSONObject object = new JSONObject();
-        object.put("id","1");
-        object.put("name","zzz");
-        object.put("open",true);
-        object.put("checked",true);
-        object.put("children",children);
-        jsonArray.add(object);
+        List<JsonDept> jsonDepts = sysDeptService.getAllJsonDept(4);
+        JSONArray jsonArray = JSONArray.fromObject(jsonDepts);
         return jsonArray;
     }
 }

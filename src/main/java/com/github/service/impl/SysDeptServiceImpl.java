@@ -4,10 +4,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.github.entity.SysDept;
 import com.github.repo.SysDeptRepository;
 import com.github.service.SysDeptService;
+import com.github.utils.JsonDept;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service("sysDeptService")
@@ -24,15 +26,24 @@ public class SysDeptServiceImpl implements SysDeptService {
     }
 
     @Override
-    public JSONArray getAllJsonDept(String deptId) {
-        List<SysDept> sysDepts =sysDeptRepository.findAllByParentIdEqualsOrDeptIdAndDelFlag(deptId,deptId,"0");
-        return null;
+    public List<JsonDept> getAllJsonDept(Integer deptId) {
+        List<JsonDept> jsonDepts = new ArrayList<>();
+        SysDept dept = sysDeptRepository.findSysDeptByDeptIdIsAndDelFlagIs(deptId,"0");
+        if(null != dept){
+            jsonDepts.add(JsonDept.transfer(dept));
+            this.getJsonDept(dept,jsonDepts);
+        }
+        return jsonDepts;
     }
 
-    private JSONArray getJsonDept(String deptId){
-        JSONArray jsonArray = new JSONArray();
-        SysDept dept = sysDeptRepository.findSysDeptByDeptIdEqualsAndDelFlagEquals(deptId,"0");
-        List<SysDept> children = sysDeptRepository.findAllByParentIdAndDelFlagIs(deptId,"0");
-        return jsonArray;
+    private List<JsonDept> getJsonDept(SysDept sysDept,List<JsonDept> jsonDepts){
+        List<SysDept> sysChildren = sysDeptRepository.findAllByParentIdIsAndDelFlagIs(sysDept.getDeptId(),"0");
+        if(null != sysChildren && sysChildren.size()>0){
+            for (SysDept deptInfo:sysChildren) {
+                jsonDepts.add(JsonDept.transfer(deptInfo));
+                getJsonDept(deptInfo,jsonDepts);
+            }
+        }
+        return jsonDepts;
     }
 }

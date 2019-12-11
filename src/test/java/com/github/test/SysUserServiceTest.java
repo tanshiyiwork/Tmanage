@@ -1,7 +1,9 @@
 package com.github.test;
 
 import com.github.dto.UserDto;
+import com.github.service.SysDeptService;
 import com.github.service.SysUserService;
+import com.github.utils.JsonDept;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -58,5 +60,14 @@ public class SysUserServiceTest {
         SysUserService sysUserService = (SysUserService)applicationContext.getBean("sysUserService");
         Set<String> set1 = sysUserService.findRoleIdByUserId(4);
         set1.stream().forEach(System.out::println);
+    }
+
+    @Test
+    public void testGetAllJsonDept(){
+        SysDeptService sysDeptService = (SysDeptService)applicationContext.getBean("sysDeptService");
+        List<JsonDept> jsonDepts = sysDeptService.getAllJsonDept(4);
+        for (JsonDept jsonDept:jsonDepts) {
+            System.out.println(jsonDept);
+        }
     }
 }
