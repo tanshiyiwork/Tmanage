@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface SysDeptRepository extends JpaRepository<SysDept, Integer>, JpaSpecificationExecutor<SysDept> {
 
-    SysDept findSysDeptByDeptIdEqualsAndDelFlagEquals(String deptId,String delFlag);
+    SysDept findSysDeptByDeptIdIsAndDelFlagIs(Integer deptId,String delFlag);
 
-    public List<SysDept> findAllByParentIdAndDelFlagIs(String parentId,String delFlag);
+    public List<SysDept> findAllByParentIdIsAndDelFlagIs(Integer parentId,String delFlag);
 
-    public List<SysDept> findAllByParentIdEqualsOrDeptIdAndDelFlag(String parentId,String deptId,String delFlag);
+    public List<SysDept> findAllByParentIdIsOrDeptIdIsAndDelFlagIs(Integer parentId,Integer deptId,String delFlag);
 }
