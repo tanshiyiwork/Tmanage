@@ -1,10 +1,10 @@
 package com.github.utils;
 
-import com.alibaba.fastjson.JSONObject;
-import com.github.entity.SysDept;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.List;
 
 
 @Getter
@@ -13,19 +13,9 @@ import lombok.ToString;
 public class JsonDept {
 
     private Integer id;
-    private String name;
-    private boolean open;
-    private Integer pid;
-    private boolean checked;
-
-    public static JsonDept transfer(SysDept sysDept){
-        JsonDept dept = new JsonDept();
-        dept.id = sysDept.getDeptId();
-        dept.name = sysDept.getDeptName();
-        dept.open = true;
-        dept.pid = sysDept.getParentId();
-        dept.checked = true;
-        return dept;
-    }
+    private String text;
+    private String state;//节点状态,'open' 或 'closed'，默认：'open'
+    private boolean checked;//表示该节点是否被选中
+    private List<JsonDept> children;
 
 }

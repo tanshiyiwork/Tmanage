@@ -13,4 +13,6 @@ public interface SysDeptRepository extends JpaRepository<SysDept, Integer>, JpaS
     public List<SysDept> findAllByParentIdIsAndDelFlagIs(Integer parentId,String delFlag);
 
     public List<SysDept> findAllByParentIdIsOrDeptIdIsAndDelFlagIs(Integer parentId,Integer deptId,String delFlag);
+
+    List<SysDept> findAllByDelFlagIs(String delFlag);
 }

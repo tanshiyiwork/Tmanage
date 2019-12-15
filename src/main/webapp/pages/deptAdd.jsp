@@ -10,11 +10,27 @@
 <head>
     <title>Title</title>
     <%@include file="../include/headInclude.jsp"%>
+    <style>
+        .layui-form-label{
+            width: 115px;
+        }
+    </style>
     <script>
         $(function () {
-            $('#tree').combotree({
-                url: <%=path%>+"dept/getDetpTree",
-                required: true
+            $("#tree").combotree({
+                url: "/dept/getDetpTree",
+                id: "id",
+                text: "name",
+                lines: true,
+                onBeforeSelect: function (node) {
+                    // debugger;
+                    if (!$(this).tree('isLeaf', node.target)) {
+                        $(this).combo("showPanel");
+                        return false;
+                    }
+
+                }
+
             });
         });
     </script>
@@ -26,21 +42,28 @@
             <div class="layui-col-md10">
                 <form class="layui-form" action="">
                     <div class="layui-form-item">
-                        <label class="layui-form-label">输入框</label>
-                        <div class="layui-input-block">
+                        <label class="layui-form-label"><span style="color: red">*</span>机构名称：</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                        </div>
+                        <label class="layui-form-label"><span style="color: red">*</span>排序编号：</label>
+                        <div class="layui-input-inline">
                             <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">密码框</label>
+                        <label class="layui-form-label"><span style="color: red">*</span>上级机构：</label>
                         <div class="layui-input-inline">
-                            <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                            <input id="tree" class="layui-input">
                         </div>
                     </div>
+
                     <div class="layui-form-item">
-                        <label class="layui-form-label">测试</label>
                         <div class="layui-input-block">
-                            <input id="tree" class="layui-input">
+                            <div style="margin-left: 25%">
+                                <button class="layui-btn" lay-submit lay-filter="formDemo">确定</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">取消</button>
+                            </div>
                         </div>
                     </div>
                 </form>

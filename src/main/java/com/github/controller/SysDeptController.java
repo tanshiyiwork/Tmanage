@@ -5,10 +5,12 @@ import com.github.service.SysDeptService;
 import com.github.utils.JsonDept;
 import com.github.utils.R;
 import io.swagger.annotations.Api;
-import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -32,9 +34,8 @@ public class SysDeptController {
 
     @RequestMapping("/getDetpTree")
     @ResponseBody
-    public JSONArray getDetpTree(){
+    public List<JsonDept> getDetpTree(){
         List<JsonDept> jsonDepts = sysDeptService.getAllJsonDept(4);
-        JSONArray jsonArray = JSONArray.fromObject(jsonDepts);
-        return jsonArray;
+        return jsonDepts;
     }
 }

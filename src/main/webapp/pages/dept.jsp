@@ -13,7 +13,7 @@
                     title: '新增部门',
                     closeBtn: 1, //显示关闭按钮
                     anim: 2,
-                    area: ['893px', '500px'],
+                    area: ['750px', '430px'],
                     shadeClose: false, //取消遮罩关闭
                     content: '${pageContext.request.contextPath}/pages/deptAdd.jsp'
                 });
