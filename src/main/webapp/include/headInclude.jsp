@@ -22,7 +22,7 @@
 <link rel="icon" type="image/png" sizes="96x96" href="<%=basePath%>assets/img/favicon.png">
 <!-- LAYUI -->
 <link rel="stylesheet" type="text/css" href="<%=basePath%>plugins/layui/css/layui.css">
-
+<link rel="stylesheet" type="text/css" href="<%=basePath%>plugins/layui/css/modules/layer/default/layer.css">
 <!-- Javascript -->
 <script type="text/javascript" src="<%=basePath%>assets/vendor/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>assets/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -31,5 +31,7 @@
 <script type="text/javascript" src="<%=basePath%>assets/scripts/klorofil-common.js"></script>
 
 <script type="text/javascript" src="<%=basePath%>plugins/layui/layui.js"></script>
+<script type="text/javascript" src="<%=basePath%>plugins/layui/lay/modules/layer.js"></script>
+
 <script type="text/javascript" src="<%=basePath%>plugins/easyui-1.7.0/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>plugins/easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>

@@ -65,7 +65,7 @@ public class SysUserServiceTest {
     @Test
     public void testGetAllJsonDept(){
         SysDeptService sysDeptService = (SysDeptService)applicationContext.getBean("sysDeptService");
-        List<JsonDept> jsonDepts = sysDeptService.getAllJsonDept(4);
+        List<JsonDept> jsonDepts = sysDeptService.getAllJsonDept();
         for (JsonDept jsonDept:jsonDepts) {
             System.out.println(jsonDept);
         }

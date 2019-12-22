@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -45,11 +45,11 @@ public class SysDept {
 
     @Basic
     @Column(name = "CREATE_TIME", nullable = true)
-    private Timestamp createTime;
+    private Date createTime;
 
     @Basic
     @Column(name = "UPDATE_TIME", nullable = true)
-    private Timestamp updateTime;
+    private Date updateTime;
 
     @Basic
     @Column(name = "DEL_FLAG", nullable = true, length = 1)
