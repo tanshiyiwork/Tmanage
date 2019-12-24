@@ -96,23 +96,36 @@
             var form = layui.form;
             //监听提交
             form.on('submit(deptInfo)', function(data){
+                alert(data.field);
                 $.ajax({
                     type: 'post',
                     dataType:'json',
+                    async: false,
                     data: data.field,
                     url:"/dept/saveOrUpdate.do",
                     success:function(data){
-                        //下面就是提交成功后关闭自己
-                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                        parent.layer.close(index); //再执行关闭
-                    },
+                        if(data.code == "200"){
+                            closeIframe();
+                        }else{
+                            layer.msg('保存失败！');
+                        }
+                    },error:function () {
+                        layer.msg('保存失败！');
+                    }
                 });
+                return false;
                 /*layer.alert(JSON.stringify(data.field), {
                     title: '最终的提交信息'
                 });
                 return false;*/
             });
         });
+
+        //关闭当前弹出层
+        function closeIframe() {
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            parent.layer.close(index); //再执行关闭
+        }
     </script>
 </head>
 <body>
@@ -138,13 +151,13 @@
                         </div>
                         <label class="layui-form-label"><span style="color: red">*</span>排序编号：</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="sort" required  lay-verify="required" placeholder="请输入排序编号" class="layui-input">
+                            <input type="text" name="sort" required  lay-verify="required|number" placeholder="请输入排序编号" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label"><span style="color: red">*</span>机构层级：</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="level" required  lay-verify="required" placeholder="请输入机构层级" class="layui-input">
+                            <input type="text" name="level" required  lay-verify="required|number" placeholder="请输入机构层级" class="layui-input">
                         </div>
                     </div>
                     <%--<div class="layui-form-item">
@@ -157,9 +170,9 @@
                     <div class="layui-form-item">
                         <div class="layui-input-block">
                             <div style="margin-left: 25%">
-                                <button class="layui-btn" lay-submit="" lay-filter="deptInfo">确定</button>
+                                <input class="layui-btn" type="button" lay-submit lay-filter="deptInfo" value="保存">
                                 <button type="reset" class="layui-btn">重置</button>
-                                <button class="layui-btn" type="button" onclick="layer.closeAll();">关闭</button>
+                                <button class="layui-btn" type="button" onclick="closeIframe()">关闭</button>
                             </div>
                         </div>
                     </div>

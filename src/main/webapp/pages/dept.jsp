@@ -7,18 +7,15 @@
     <script type="text/javascript" src="../plugins/ztree/js/jquery.ztree.core.js"></script>
     <script type="text/javascript">
         function addDept(){
-            layui.use('layer', function(){
-                var layer = layui.layer;
-                parent.layer.open({ //在父窗口打开
-                    type: 2,
-                    skin: 'layui-layer-rim', //样式类名
-                    title: '新增部门',
-                    closeBtn: 1, //显示关闭按钮
-                    anim: 2,
-                    area: ['750px', '430px'],
-                    shadeClose: false, //取消遮罩关闭
-                    content: '${pageContext.request.contextPath}/pages/deptAdd.jsp'
-                });
+            parent.layer.open({ //在父窗口打开
+                type: 2,
+                skin: 'layui-layer-rim', //样式类名
+                title: '新增部门',
+                closeBtn: 1, //显示关闭按钮
+                anim: 2,
+                area: ['750px', '430px'],
+                shadeClose: false, //取消遮罩关闭
+                content: '${pageContext.request.contextPath}/pages/deptAdd.jsp'
             });
         }
         var setting = {

@@ -131,10 +131,6 @@
             }
 
         });
-
-        layui.use('layer', function(){
-            var layer = layui.layer;
-        });
     </script>
 </head>
 <body style="overflow:-moz-scrollbars-none;overflow-y:hidden">
