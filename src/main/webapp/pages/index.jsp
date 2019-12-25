@@ -207,7 +207,7 @@
         </div>
     </div>
     <div class="main">
-        <iframe name="mainIframe" frameborder="0" src="${pageContext.request.contextPath}/pages/elements.jsp" style="width: 100%;height: 100%;"></iframe>
+        <iframe name="mainIframe" frameborder="0" src="${pageContext.request.contextPath}/pages/dept.jsp" style="width: 100%;height: 100%;"></iframe>
     </div>
 </div>
 </body>

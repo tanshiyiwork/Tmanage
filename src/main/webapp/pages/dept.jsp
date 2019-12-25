@@ -7,16 +7,31 @@
     <script type="text/javascript" src="../plugins/ztree/js/jquery.ztree.core.js"></script>
     <script type="text/javascript">
         function addDept(){
-            parent.layer.open({ //在父窗口打开
-                type: 2,
-                skin: 'layui-layer-rim', //样式类名
-                title: '新增部门',
-                closeBtn: 1, //显示关闭按钮
-                anim: 2,
-                area: ['750px', '430px'],
-                shadeClose: false, //取消遮罩关闭
-                content: '${pageContext.request.contextPath}/pages/deptAdd.jsp'
-            });
+            var parentId = $("#tempParentId").val();
+            if(parentId == "" || parentId == undefined){
+                layer.msg('请先选择组织树节点！');
+            }else{
+                parent.layer.open({ //在父窗口打开
+                    type: 2,
+                    skin: 'layui-layer-rim', //样式类名
+                    title: '新增部门',
+                    closeBtn: 1, //显示关闭按钮
+                    anim: 2,
+                    area: ['750px', '430px'],
+                    shadeClose: false, //取消遮罩关闭
+                    content: '${pageContext.request.contextPath}/pages/deptAdd.jsp',
+                    success: function(layero, index){
+                        /*var jquerySendHelloButton = $("#pId", layero.find("iframe")[0].contentWindow.document);
+                        var tIdButton = $("#tId", layero.find("iframe")[0].contentWindow.document);
+                        var treeCodeButton = $("#treeCode", layero.find("iframe")[0].contentWindow.document);
+                        jquerySendHelloButton.attr("value", $("#tempPId").val());
+                        tIdButton.attr("value", $("#tempTId").val());
+                        treeCodeButton.attr("value", $("#tempTreeCode").val());*/
+                        var parentObj = $(layero).find("iframe")[0].contentWindow.document.getElementById("parentId");
+                        $(parentObj).val(parentId);
+                    }
+                });
+            }
         }
         var setting = {
             async: {
@@ -56,9 +71,7 @@
             reloadTree();
         });
         function zTreeOnClick(event, treeId, treeNode) {
-            /*$("#tempPId").val(treeNode.id);
-            $("#tempTId").val(treeNode.id);
-            $("#tempTreeCode").val(treeNode.treecode);*/
+            $("#tempParentId").val(treeNode.id);
             initTable(treeNode.id);
         };
 
@@ -91,43 +104,20 @@
         }
 
         function modifyBtn(stId) {
-            layui.use('layer', function(){
-                var layer = layui.layer;
-                parent.layer.open({ //在父窗口打开
-                    type: 2,
-                    skin: 'layui-layer-rim', //样式类名
-                    title: '新增部门',
-                    closeBtn: 1, //显示关闭按钮
-                    anim: 2,
-                    area: ['750px', '430px'],
-                    shadeClose: false, //取消遮罩关闭
-                    content: '/table/toUpdateHeadInfo?stId='+stId,
-                });
+            parent.layer.open({ //在父窗口打开
+                type: 2,
+                skin: 'layui-layer-rim', //样式类名
+                title: '编辑部门',
+                closeBtn: 1, //显示关闭按钮
+                anim: 2,
+                area: ['750px', '430px'],
+                shadeClose: false, //取消遮罩关闭
+                content: '/dept/saveOrUpdate?deptId='+stId,
             });
         }
 
         function delBtn(stId) {
 
-        }
-
-        function addTableHead() {
-            layer.open({
-                type: 2,
-                title: '新增节点',
-                maxmin: false,
-                shadeClose: false, //点击遮罩关闭层
-                area : ['800px' , '520px'],
-                content: './table_add.jsp',
-                success: function(layero, index){
-                    //注意这里的#sid是iframe页面中的一个标签id
-                    var jquerySendHelloButton = $("#pId", layero.find("iframe")[0].contentWindow.document);
-                    var tIdButton = $("#tId", layero.find("iframe")[0].contentWindow.document);
-                    var treeCodeButton = $("#treeCode", layero.find("iframe")[0].contentWindow.document);
-                    jquerySendHelloButton.attr("value", $("#tempPId").val());
-                    tIdButton.attr("value", $("#tempTId").val());
-                    treeCodeButton.attr("value", $("#tempTreeCode").val());
-                }
-            });
         }
 
         function reloadTable() {
@@ -147,6 +137,7 @@
         </div>
         <div class="layui-col-md9">
             <div class="layui-row">
+                <input type="hidden" id="tempParentId"/>
                 <button type="button" class="layui-btn" onclick="addDept()">
                     <i class="layui-icon">&#xe608;</i> 添加部门
                 </button>

@@ -43,44 +43,11 @@
                 layer.closeAll('loading');
             }
         }
-        function saveTableInfo() {
-            $('#deptInfo').form('submit',{
-                url:"/dept/saveOrUpdate.do",
-                onSubmit:function(){
-                    showloading(true);
-                },
-                success:function(data) {
-                    showloading(false);
-                    var obj = eval('(' + data + ')');
-                    if(obj.code == "200"){
-                        layer.alert('保存成功！');
-                        window.parent.reloadTree();
-                        closeCurFrame();
-                    }else{
-                        layer.alert('保存失败！');
-                    }
-                    window.parent.reloadTable();
-                }
-            });
-            /*if($("#headInfo").form('validate')){
-                $('#headInfo').form({
-                    url:"/table/saveOrUpdate.do",
-                    onSubmit: function(){
-                        loading("正在保存");
-                    },
-                    success:function(data){
-                        alert(data)
-                    }
-                });
-            }*/
-        }
-
-        function closeCurFrame() {
-            //关闭layer弹出层
-            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-            parent.layer.close(index);
-        }
         $(function () {
+            //top.window["mainIframe"].reloadTree();
+            //var dom = top.window["mainIframe"].document.getElementById("abc");
+            //console.log();
+            //$(dom).click();
             /*$("#tree").combotree({
                 url: "/dept/getDetpTree",
                 id: "id",
@@ -96,7 +63,6 @@
             var form = layui.form;
             //监听提交
             form.on('submit(deptInfo)', function(data){
-                alert(data.field);
                 $.ajax({
                     type: 'post',
                     dataType:'json',
@@ -106,6 +72,9 @@
                     success:function(data){
                         if(data.code == "200"){
                             closeIframe();
+                            top.window["mainIframe"].reloadTree();
+                            top.window["mainIframe"].reloadTable();
+                            layer.msg('保存成功！');
                         }else{
                             layer.msg('保存失败！');
                         }
@@ -114,10 +83,6 @@
                     }
                 });
                 return false;
-                /*layer.alert(JSON.stringify(data.field), {
-                    title: '最终的提交信息'
-                });
-                return false;*/
             });
         });
 
@@ -134,6 +99,7 @@
         <div class="layui-row" style="">
             <div class="layui-col-md10">
                 <form class="layui-form">
+                    <input type="hidden" id="parentId" name="parentId"/>
                     <div class="layui-form-item">
                         <label class="layui-form-label"><span style="color: red">*</span>机构名称：</label>
                         <div class="layui-input-inline">
