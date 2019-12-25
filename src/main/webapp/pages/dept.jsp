@@ -92,18 +92,21 @@
                     {field:'deptName',title:'部门名称',width:80,sortable:true},
                     {field:'level',title:'层级',width:70,sortable:true},
                     {field:'sort',title:'排序',width:50,sortable:true},
-                    {field:'createTime',title:'创建时间',width:50,sortable:true},
+                    {field:'createTime',title:'创建时间',width:50,sortable:true,formatter:function (value,row,index) {
+                            var timestamp = new Date(value);
+                            return timestamp.toLocaleString();
+                    }},
                     {field:'id',title:'操作',width:70,formatter:function(value,rowData,rowIndex){
                             var c ="";
-                            c+="<a href='javascript:void(0);' onclick='modifyBtn(\""+ rowData.id+ "\")'>编辑</a>";
-                            c+="&nbsp;|&nbsp;<a href='javascript:void(0);' onclick='delBtn(\""+ rowData.id+ "\")'>删除</a>";
+                            c+="<a href='javascript:void(0);' onclick='modifyBtn(\""+ rowData.deptId+ "\")'>编辑</a>";
+                            c+="&nbsp;|&nbsp;<a href='javascript:void(0);' onclick='delBtn(\""+ rowData.deptId+ "\")'>删除</a>";
                             return c;
                         }}
                 ]]
             });
         }
 
-        function modifyBtn(stId) {
+        function modifyBtn(deptId) {
             parent.layer.open({ //在父窗口打开
                 type: 2,
                 skin: 'layui-layer-rim', //样式类名
@@ -112,12 +115,30 @@
                 anim: 2,
                 area: ['750px', '430px'],
                 shadeClose: false, //取消遮罩关闭
-                content: '/dept/saveOrUpdate?deptId='+stId,
+                content: '/dept/toEditDept?deptId='+deptId
             });
         }
 
-        function delBtn(stId) {
-
+        function delBtn(deptId) {
+            parent.layer.confirm('您确定要删除该部门信息吗?',{btn: ['确定', '取消'],title:"提示"}, function(index){
+                $.ajax({
+                    type: "post",
+                    url: "/dept/deleteDeptInfo",
+                    data: {"deptId":deptId},
+                    dataType: "json",
+                    async:false,
+                    success:function(data) {
+                        if(data.code == "200"){
+                            layer.msg('删除成功', {icon: 1});
+                        }else{
+                            layer.msg('删除失败', {icon: 2});
+                        }
+                        reloadTable();
+                        reloadTree();
+                    }
+                });
+                parent.layer.close(index);
+            });
         }
 
         function reloadTable() {
@@ -146,20 +167,6 @@
                 <table id="listTable" width="100%"></table>
             </div>
         </div>
-    <%--<div class="layui-fluid">
-        <div class="layui-row" style="">
-            <div class="layui-col-md10">
-                <button type="button" class="layui-btn" onclick="addDept()">
-                    <i class="layui-icon">&#xe608;</i> 添加部门
-                </button>
-            </div>
-        </div>
-        <div class="layui-row layui-col-space10" style="width: 100%;">
-            <div class="layui-col-md10">
-                <table id="demoTreeTable1"></table>
-            </div>
-        </div>
-    </div>--%>
     </div>
 </div>
 </body>

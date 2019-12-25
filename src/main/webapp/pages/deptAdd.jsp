@@ -72,9 +72,14 @@
                     success:function(data){
                         if(data.code == "200"){
                             closeIframe();
+                            layer.msg('保存成功！');
                             top.window["mainIframe"].reloadTree();
                             top.window["mainIframe"].reloadTable();
-                            layer.msg('保存成功！');
+                        }else if(data.code == "300"){
+                            closeIframe();
+                            layer.msg('修改成功！');
+                            top.window["mainIframe"].reloadTree();
+                            top.window["mainIframe"].reloadTable();
                         }else{
                             layer.msg('保存失败！');
                         }
@@ -99,40 +104,34 @@
         <div class="layui-row" style="">
             <div class="layui-col-md10">
                 <form class="layui-form">
-                    <input type="hidden" id="parentId" name="parentId"/>
+                    <input type="hidden" name="deptId" value="${sysDept.deptId}"/>
+                    <input type="hidden" id="parentId" name="parentId" value="${sysDept.parentId}"/>
                     <div class="layui-form-item">
                         <label class="layui-form-label"><span style="color: red">*</span>机构名称：</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="deptName" required  lay-verify="required" placeholder="请输入部门名称" class="layui-input">
+                            <input type="text" name="deptName" value="${sysDept.deptName}" required  lay-verify="required" placeholder="请输入部门名称" class="layui-input">
                         </div>
                         <label class="layui-form-label"><span style="color: red">*</span>机构编码：</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="deptCode" required  lay-verify="required" placeholder="请输入部门编号" class="layui-input">
+                            <input type="text" name="deptCode" value="${sysDept.deptCode}" required  lay-verify="required" placeholder="请输入部门编号" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label"><span style="color: red">*</span>模块编号：</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="moudleId" required  lay-verify="required" placeholder="请输入模块编号" class="layui-input">
+                            <input type="text" name="moudleId" value="${sysDept.moudleId}" required  lay-verify="required" placeholder="请输入模块编号" class="layui-input">
                         </div>
                         <label class="layui-form-label"><span style="color: red">*</span>排序编号：</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="sort" required  lay-verify="required|number" placeholder="请输入排序编号" class="layui-input">
+                            <input type="text" name="sort" value="${sysDept.sort}" required  lay-verify="required|number" placeholder="请输入排序编号" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label"><span style="color: red">*</span>机构层级：</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="level" required  lay-verify="required|number" placeholder="请输入机构层级" class="layui-input">
+                            <input type="text" name="level" value="${sysDept.level}" required  lay-verify="required|number" placeholder="请输入机构层级" class="layui-input">
                         </div>
                     </div>
-                    <%--<div class="layui-form-item">
-                        <label class="layui-form-label"><span style="color: red">*</span>上级机构：</label>
-                        <div class="layui-input-inline">
-                            <input id="tree" class="layui-input" required lay-verify="required">
-                            <input type="hidden" name="parentId" id="parentId"/>
-                        </div>
-                    </div>--%>
                     <div class="layui-form-item">
                         <div class="layui-input-block">
                             <div style="margin-left: 25%">

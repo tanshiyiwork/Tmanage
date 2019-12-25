@@ -16,4 +16,8 @@ public interface SysDeptService {
     List<ZtreeNode> getDpetZtreeNodesById(Integer deptId);
 
     Page<SysDept> findSysDeptPage(SysDept sysDept,Integer page, Integer rows);
+
+    SysDept findDeptByDeptId(Integer deptId);
+
+    void deleteByDeptId(Integer deptId);
 }

@@ -1,5 +1,7 @@
 package com.github.controller;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.entity.SysDept;
 import com.github.service.SysDeptService;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -63,6 +66,21 @@ public class SysDeptController {
         return jsonMap;
     }
 
+    @RequestMapping("/deleteDeptInfo")
+    @ResponseBody
+    public Map<String, Object> deleteDeptInfo(String deptId){
+        Map<String, Object> jsonMap = new HashMap<>();
+        try {
+            sysDeptService.deleteByDeptId(Integer.parseInt(deptId));
+            jsonMap.put("code","200");
+        }catch (Exception e){
+            e.printStackTrace();
+            jsonMap.put("code","500");
+            return jsonMap;
+        }
+        return jsonMap;
+    }
+
     @RequestMapping("/saveOrUpdate")
     @ResponseBody
     public Map<String, Object> saveOrUpdate(SysDept sysDept){
@@ -73,9 +91,22 @@ public class SysDeptController {
             sysDeptService.saveSysDept(sysDept);
             jsonMap.put("code","200");
         }else{//修改
-
+            SysDept oldDept = sysDeptService.findDeptByDeptId(sysDept.getDeptId());
+            BeanUtil.copyProperties(sysDept,oldDept, CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
+            oldDept.setUpdateTime(new Date());
+            sysDeptService.saveSysDept(oldDept);
+            jsonMap.put("code","300");
         }
         return jsonMap;
+    }
+
+    @RequestMapping("/toEditDept")
+    public ModelAndView toEditDept(String deptId){
+        ModelAndView modelAndView = new ModelAndView();
+        SysDept sysDept = sysDeptService.findDeptByDeptId(Integer.parseInt(deptId));
+        modelAndView.addObject("sysDept",sysDept);
+        modelAndView.setViewName("deptAdd");
+        return modelAndView;
     }
 
     public static Map<String, Object> convertJpaPageToJson(Page<?> page) {

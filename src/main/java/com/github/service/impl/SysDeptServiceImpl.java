@@ -88,6 +88,17 @@ public class SysDeptServiceImpl implements SysDeptService {
         return sysDeptPage;
     }
 
+    @Override
+    public SysDept findDeptByDeptId(Integer deptId) {
+        SysDept sysDept = sysDeptRepository.findSysDeptByDeptIdIsAndDelFlagIs(deptId,"0");
+        return sysDept;
+    }
+
+    @Override
+    public void deleteByDeptId(Integer deptId) {
+        sysDeptRepository.deleteById(deptId);
+    }
+
 
     public void findZtreeChildren(ZtreeNode node, List<SysDept> depts,List<ZtreeNode> allNodes){
         for (SysDept sysDept : depts){
