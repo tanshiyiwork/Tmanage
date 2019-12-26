@@ -152,19 +152,28 @@
 </head>
 <body>
 <div class="main-content">
-    <div class="layui-row">
+    <div class="layui-row layui-col-space10">
         <div class="layui-col-md3">
-            <ul id="tree" class="ztree"></ul>
-        </div>
-        <div class="layui-col-md9">
-            <div class="layui-row">
-                <input type="hidden" id="tempParentId"/>
-                <button type="button" class="layui-btn" onclick="addDept()">
-                    <i class="layui-icon">&#xe608;</i> 添加部门
-                </button>
+            <div class="panel panel-headline">
+                <div class="panel-body" style="height: 80%;">
+                    <ul id="tree" class="ztree"></ul>
+                </div>
             </div>
-            <div class="layui-row">
-                <table id="listTable" width="100%"></table>
+        </div>
+
+        <div class="layui-col-md9">
+            <div class="panel panel-headline">
+                <div class="panel-body" style="height: 80%;">
+                    <div class="layui-row">
+                        <input type="hidden" id="tempParentId"/>
+                        <button type="button" class="layui-btn" onclick="addDept()">
+                            <i class="layui-icon">&#xe608;</i> 添加部门
+                        </button>
+                    </div>
+                    <div class="layui-row">
+                        <table id="listTable" width="100%"></table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

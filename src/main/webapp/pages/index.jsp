@@ -185,20 +185,19 @@
         <div class="sidebar-scroll">
             <nav>
                 <ul class="nav">
-                    <li><a href="${pageContext.request.contextPath}/pages/dept.jsp" target="mainIframe" class="active"><i class="lnr lnr-home"></i> <span>主页</span></a></li>
-                    <li><a href="${pageContext.request.contextPath}/pages/elements.jsp" target="mainIframe" class=""><i class="lnr lnr-code"></i> <span>元素</span></a></li>
-                    <li><a href="${pageContext.request.contextPath}/pages/charts.jsp" target="mainIframe" class=""><i class="lnr lnr-chart-bars"></i> <span>图表</span></a></li>
-                    <li><a href="${pageContext.request.contextPath}/pages/panels.jsp" target="mainIframe" class=""><i class="lnr lnr-cog"></i> <span>面板</span></a></li>
-                    <li><a href="${pageContext.request.contextPath}/pages/notifications.jsp" target="mainIframe" class=""><i class="lnr lnr-alarm"></i> <span>通知</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/pages/elements.jsp" target="mainIframe" class="active"><i class="lnr lnr-home"></i> <span>主页</span></a></li>
                     <li>
-                        <a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Pages</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                        <a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-cog"></i> <span>权限管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
                         <div id="subPages" class="collapse ">
                             <ul class="nav">
-                                <li><a href="${pageContext.request.contextPath}/pages/profile.jsp" target="mainIframe" class="">Profile</a></li>
-                                <li><a href="${pageContext.request.contextPath}/pages/lockscreen.jsp" target="mainIframe" class="">Lockscreen</a></li>
+                                <li><a href="${pageContext.request.contextPath}/pages/dept.jsp" target="mainIframe" class="">部门管理</a></li>
+                                <li><a href="${pageContext.request.contextPath}/pages/role.jsp" target="mainIframe" class="">角色管理</a></li>
                             </ul>
                         </div>
                     </li>
+                    <li><a href="${pageContext.request.contextPath}/pages/charts.jsp" target="mainIframe" class=""><i class="lnr lnr-chart-bars"></i> <span>图表</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/pages/panels.jsp" target="mainIframe" class=""><i class="lnr lnr-file-empty"></i> <span>面板</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/pages/notifications.jsp" target="mainIframe" class=""><i class="lnr lnr-alarm"></i> <span>通知</span></a></li>
                     <li><a href="${pageContext.request.contextPath}/pages/tables.jsp"  class=""><i class="lnr lnr-dice"></i> <span>Tables</span></a></li>
                     <li><a href="${pageContext.request.contextPath}/pages/typography.jsp" class=""><i class="lnr lnr-text-format"></i> <span>Typography</span></a></li>
                     <li><a href="${pageContext.request.contextPath}/pages/icons.jsp" class=""><i class="lnr lnr-linearicons"></i> <span>Icons</span></a></li>
@@ -207,7 +206,7 @@
         </div>
     </div>
     <div class="main">
-        <iframe name="mainIframe" frameborder="0" src="${pageContext.request.contextPath}/pages/dept.jsp" style="width: 100%;height: 100%;"></iframe>
+        <iframe name="mainIframe" frameborder="0" src="${pageContext.request.contextPath}/pages/elements.jsp" style="width: 100%;height: 100%;"></iframe>
     </div>
 </div>
 </body>
