@@ -187,11 +187,22 @@
                 <ul class="nav">
                     <li><a href="${pageContext.request.contextPath}/pages/elements.jsp" target="mainIframe" class="active"><i class="lnr lnr-home"></i> <span>主页</span></a></li>
                     <li>
-                        <a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-cog"></i> <span>权限管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
-                        <div id="subPages" class="collapse ">
+                        <a href="#authManage" data-toggle="collapse" class="collapsed"><i class="lnr lnr-cog"></i> <span>权限管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                        <div id="authManage" class="collapse ">
                             <ul class="nav">
+                                <li><a href="${pageContext.request.contextPath}/pages/user.jsp" target="mainIframe" class="">用户管理</a></li>
                                 <li><a href="${pageContext.request.contextPath}/pages/dept.jsp" target="mainIframe" class="">部门管理</a></li>
                                 <li><a href="${pageContext.request.contextPath}/pages/role.jsp" target="mainIframe" class="">角色管理</a></li>
+                                <li><a href="${pageContext.request.contextPath}/pages/menu.jsp" target="mainIframe" class="">菜单管理</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#systemManage" data-toggle="collapse" class="collapsed"><i class="lnr lnr-chart-bars"></i> <span>系统管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                        <div id="systemManage" class="collapse ">
+                            <ul class="nav">
+                                <li><a href="${pageContext.request.contextPath}/pages/user.jsp" target="mainIframe" class="">字典管理</a></li>
+                                <li><a href="${pageContext.request.contextPath}/pages/dept.jsp" target="mainIframe" class="">日志管理</a></li>
                             </ul>
                         </div>
                     </li>

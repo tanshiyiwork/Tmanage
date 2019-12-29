@@ -35,3 +35,5 @@
 
 <script type="text/javascript" src="<%=basePath%>plugins/easyui-1.7.0/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>plugins/easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
+
+<script type="text/javascript" src="<%=basePath%>common/common.js"></script>
