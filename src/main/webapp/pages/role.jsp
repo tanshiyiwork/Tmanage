@@ -101,8 +101,8 @@
                 shadeClose: false, //取消遮罩关闭
                 content: '${pageContext.request.contextPath}/pages/roleAdd.jsp',
                 success: function(layero, index){
-                    var parentObj = $(layero).find("iframe")[0].contentWindow.document.getElementById("parentId");
-                    $(parentObj).val(parentId);
+                    /*var parentObj = $(layero).find("iframe")[0].contentWindow.document.getElementById("parentId");
+                    $(parentObj).val(parentId);*/
                 }
             });
         }

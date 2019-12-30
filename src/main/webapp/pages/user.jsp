@@ -102,6 +102,21 @@
                 }
             });
         });
+        function addUser() {
+            parent.layer.open({ //在父窗口打开
+                type: 2,
+                title: '新增用户',
+                closeBtn: 1, //显示关闭按钮
+                anim: 2,
+                area: ['750px', '450px'],
+                shadeClose: false, //取消遮罩关闭
+                content: '${pageContext.request.contextPath}/pages/userAdd.jsp',
+                success: function(layero, index){
+                    /*var parentObj = $(layero).find("iframe")[0].contentWindow.document.getElementById("parentId");
+                    $(parentObj).val(parentId);*/
+                }
+            });
+        }
     </script>
 </head>
 <body>
@@ -122,7 +137,7 @@
                                 <div style="float: left;margin: 4px 28px;">
                                     <button type="button" class="layui-btn layui-btn-sm">搜索</button>
                                     <button type="button" class="layui-btn layui-btn-sm">重置</button>
-                                    <button type="button" class="layui-btn layui-btn-sm" onclick="addRole()">添加</button>
+                                    <button type="button" class="layui-btn layui-btn-sm" onclick="addUser()">添加</button>
                                 </div>
                             </div>
                         </form>

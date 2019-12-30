@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Api(value="角色模块")
 @Controller
@@ -79,5 +77,21 @@ public class SysRoleController {
             return jsonMap;
         }
         return jsonMap;
+    }
+
+    @RequestMapping("/getRoleCommbo")
+    @ResponseBody
+    public List<Map<String,Object>> getRoleCommbo(){
+        List<Map<String,Object>> list = new ArrayList<>();
+        List<SysRole> sysRoles = sysRoleService.findAllSysRole();
+        if(sysRoles!=null && sysRoles.size()>0){
+            for (SysRole sysRole:sysRoles) {
+                Map<String,Object> map = new HashMap<>();
+                map.put("id",sysRole.getRoleId());
+                map.put("text",sysRole.getRoleName());
+                list.add(map);
+            }
+        }
+        return list;
     }
 }

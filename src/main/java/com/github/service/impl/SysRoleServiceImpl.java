@@ -55,4 +55,9 @@ public class SysRoleServiceImpl implements SysRoleService {
     public void deleteSysRoleById(Integer roleId) {
         sysRoleRepository.deleteById(roleId);
     }
+
+    @Override
+    public List<SysRole> findAllSysRole() {
+        return sysRoleRepository.findAllByDelFlagIs("0");
+    }
 }
