@@ -2,6 +2,7 @@ package com.github.security.config;
 
 import com.github.security.UserDetailsServiceImpl;
 import com.github.security.filter.JwtAuthenticationTokenFilter;
+import com.github.security.handle.AccessDeniedHandlerImpl;
 import com.github.security.handle.AuthenticationEntryPointImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationEntryPointImpl unauthorizedHandler;
 
+    @Autowired
+    private AccessDeniedHandlerImpl accessDeniedHandler;
 
     @Autowired
     private JwtAuthenticationTokenFilter authenticationTokenFilter;
@@ -94,7 +97,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 由于使用的是JWT，我们这里不需要csrf
                 .csrf().disable()
                 // 认证失败处理类
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).accessDeniedHandler(accessDeniedHandler).and()
                 // 如果需要就创建一个Session（默认）
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).invalidSessionUrl("/pages/login.jsp")
                 .and()
@@ -108,11 +111,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js",
                         "/**/scripts/*.js",
                         "/**/img/**",
-                        "/**/vendor/**"
+                        "/**/vendor/**",
+                        "/**/error/*.jsp"
                 ).permitAll()
                 .antMatchers("/captcha.jpg").permitAll()
                 // 访问/user 需要拥有admin权限
-                .antMatchers("/**").hasRole("5")
+                .antMatchers("/**").hasRole("BASE_ROLE")
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()
                 .and()
@@ -124,7 +128,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successForwardUrl("/pages/index.jsp")
                 .failureForwardUrl("/pages/login.jsp")
                 .and()
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/pages/login.jsp");
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/pages/login.jsp")
+                .invalidateHttpSession(true);//指定是否在注销时让HttpSession无效
         httpSecurity.rememberMe().rememberMeServices(tokenBasedRememberMeServices())
                 .and()
                 .authenticationProvider(rememberMeAuthenticationProvider());

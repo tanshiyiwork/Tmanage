@@ -1,7 +1,7 @@
 package com.github.service;
 
-import com.github.dto.UserDto;
 import com.github.entity.SysUser;
+import org.springframework.data.domain.Page;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
@@ -9,17 +9,17 @@ import java.util.Set;
 public interface SysUserService {
     /**
      * 保存用户以及角色部门等信息
-     * @param userDto
+     * @param sysUser
      * @return
      */
-    public boolean insertUser(UserDto userDto);
+    public boolean insertUser(SysUser sysUser);
 
     /**
      * 更新用户以及角色部门等信息
-     * @param userDto
+     * @param sysUser
      * @return
      */
-    public boolean updateUser(UserDto userDto);
+    public boolean updateUser(SysUser sysUser);
 
     /**
      * 删除用户信息
@@ -67,9 +67,21 @@ public interface SysUserService {
     Set<String> findPermsByUserId(Integer userId);
 
     /**
-     * 通过用户id查询角色集合
+     * 通过用户id查询角色ID集合
      * @param userId
      * @return
      */
     Set<String> findRoleIdByUserId(Integer userId);
+
+    /**
+     * 通过用户id查询角色标识集合
+     * @param userId
+     * @return
+     */
+    Set<String> findRoleCodeByUserId(Integer userId);
+
+    Page<SysUser> findSysUserPage(SysUser sysUser,Integer page,Integer pageSize);
+
+    SysUser findSysUserByUserId(Integer userId);
+
 }

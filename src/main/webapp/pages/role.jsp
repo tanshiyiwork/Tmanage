@@ -60,7 +60,6 @@
         function modifyRole(roleId) {
             parent.layer.open({ //在父窗口打开
                 type: 2,
-                skin: 'layui-layer-rim', //样式类名
                 title: '编辑部门',
                 closeBtn: 1, //显示关闭按钮
                 anim: 2,
@@ -80,9 +79,11 @@
                     async:false,
                     success:function(data) {
                         if(data.code == "200"){
-                            layer.msg('删除成功', {icon: 1,time:2000});
+                            layer.msg('删除成功！', {icon: 1,time:2000});
+                        }else if(data.code == '300'){
+                            layer.msg('该角色已被绑定，请解绑后再进行删除！', {icon: 2,time:3000});
                         }else{
-                            layer.msg('删除失败', {icon: 2,time:2000});
+                            layer.msg('删除失败！', {icon: 2,time:2000});
                         }
                         reloadTable();
                     }
@@ -119,7 +120,7 @@
 <body>
 <div class="main-content">
     <div class="panel panel-headline">
-        <div class="panel-body" style="height: 80%;">
+        <div class="panel-body" style="height: 84%;">
             <div class="layui-row">
                 <form class="layui-form" action="">
                     <div class="layui-form-item">

@@ -1,8 +1,5 @@
 package com.github.security.handle;
 
-import cn.hutool.http.Status;
-import com.github.security.util.SecurityUtil;
-import com.github.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -26,6 +23,7 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint, S
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
         log.error("请求访问: " + request.getRequestURI() + "接口，经jwt认证失败，无法访问系统资源.");
-        SecurityUtil.writeJavaScript(R.error(Status.HTTP_UNAUTHORIZED,"请求访问:" + request.getRequestURI() + "接口,经jwt 认证失败,无法访问系统资源"),response);
+        //SecurityUtil.writeJavaScript(R.error(Status.HTTP_UNAUTHORIZED,"请求访问:" + request.getRequestURI() + "接口,经jwt 认证失败,无法访问系统资源"),response);
+        response.sendRedirect("/pages/error/403.jsp");
     }
 }

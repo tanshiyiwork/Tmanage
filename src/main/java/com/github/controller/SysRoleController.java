@@ -4,7 +4,9 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.entity.SysRole;
+import com.github.entity.SysUserRole;
 import com.github.service.SysRoleService;
+import com.github.service.SysUserRoleService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 @Api(value="角色模块")
@@ -23,19 +26,22 @@ public class SysRoleController {
     @Autowired
     private SysRoleService sysRoleService;
 
+    @Autowired
+    private SysUserRoleService sysUserRoleService;
+
     @RequestMapping("/saveOrUpdate")
     @ResponseBody
     public Map<String, Object> saveOrUpdate(SysRole sysRole){
         Map<String, Object> jsonMap = new HashMap<>();
         if(ObjectUtil.isNull(sysRole.getRoleId())){//新增
             sysRole.setDelFlag("0");
-            sysRole.setCreateTime(new Date());
+            sysRole.setCreateTime(new Timestamp(new Date().getTime()));
             sysRoleService.saveOrUpdateSysRole(sysRole);
             jsonMap.put("code","200");
         }else{//修改
             SysRole oldRole = sysRoleService.findSysRoleByRoleId(sysRole.getRoleId(),"0");
             BeanUtil.copyProperties(sysRole,oldRole, CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
-            oldRole.setUpdateTime(new Date());
+            oldRole.setUpdateTime(new Timestamp(new Date().getTime()));
             sysRoleService.saveOrUpdateSysRole(oldRole);
             jsonMap.put("code","300");
         }
@@ -69,8 +75,13 @@ public class SysRoleController {
     public Map<String, Object> deleteRoleInfo(String roleId){
         Map<String, Object> jsonMap = new HashMap<>();
         try {
-            sysRoleService.deleteSysRoleById(Integer.parseInt(roleId));
-            jsonMap.put("code","200");
+            List<SysUserRole> userRoleList = sysUserRoleService.findUserRoleListByRoleId(Integer.parseInt(roleId));
+            if(userRoleList.size()>0){//该角色已绑定人员
+                jsonMap.put("code","300");
+            }else{
+                sysRoleService.deleteSysRoleById(Integer.parseInt(roleId));
+                jsonMap.put("code","200");
+            }
         }catch (Exception e){
             e.printStackTrace();
             jsonMap.put("code","500");

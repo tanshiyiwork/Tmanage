@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -31,8 +31,12 @@ public class SysUser {
     @Column(name = "PASSWORD", nullable = false, length = 255)
     private String password;//密码
 
-    @Column(name = "DEPT_ID", nullable = true)
-    private Integer deptId;//部门ID
+    /*@Column(name = "DEPT_ID", nullable = true)
+    private Integer deptId;//部门ID*/
+
+    @OneToOne(cascade=CascadeType.REFRESH)//People是关系的维护端，当删除 people，会级联删除 address
+    @JoinColumn(name = "DEPT_ID", referencedColumnName = "DEPT_ID")//people中的address_id字段参考address表中的id字段
+    private SysDept sysDept;
 
     @Column(name = "JOB_ID", nullable = true)
     private Integer jobId;//岗位ID
@@ -47,10 +51,10 @@ public class SysUser {
     private String avatar;//头像
 
     @Column(name = "CREATE_TIME", nullable = true)
-    private Timestamp createTime;//创建时间
+    private Date createTime;//创建时间
 
     @Column(name = "UPDATE_TIME", nullable = true)
-    private Timestamp updateTime;//修改时间
+    private Date updateTime;//修改时间
 
     @Column(name = "LOCK_FLAG", nullable = true, length = 1)
     private String lockFlag;//0-正常，1-锁定
@@ -75,4 +79,10 @@ public class SysUser {
      */
     @Transient
     private String jobName;
+
+    /**
+     * 多个角色id拼接字符串
+     */
+    @Transient
+    private String roleIds;
 }

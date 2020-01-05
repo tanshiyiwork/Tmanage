@@ -1,6 +1,6 @@
 package com.github.service.impl;
 
-import com.github.dto.UserDto;
+import cn.hutool.core.util.ObjectUtil;
 import com.github.entity.SysUser;
 import com.github.entity.SysUserRole;
 import com.github.exception.BaseException;
@@ -12,9 +12,12 @@ import com.github.security.util.JwtUtil;
 import com.github.service.SysUserService;
 import com.github.utils.Tutil;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
@@ -23,7 +26,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -49,64 +58,57 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean insertUser(UserDto userDto){
-        boolean result = true;
+    public boolean insertUser(SysUser sysUser){
         try {
-            SysUser sysUser = new SysUser();
-            BeanUtils.copyProperties(userDto,sysUser);
             // 默认密码 123456
             sysUser.setPassword(Tutil.encode("12345"));
             sysUserRepository.save(sysUser);
-            List<SysUserRole> userRoles =userDto.getRoleList().stream().map(item ->{
-                SysUserRole userRole = new SysUserRole();
-                userRole.setRoleId(item);
-                userRole.setUserId(sysUser.getUserId());
-                return userRole;
-            }).collect(Collectors.toList());
+            List<SysUserRole> userRoles = getListByRoleIds(sysUser.getRoleIds(),sysUser.getUserId());
             sysUserRoleRepository.saveAll(userRoles);
-        } catch (BeansException e) {
-            result = false;
+        } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-        return result;
+        return true;
     }
 
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean updateUser(UserDto userDto) {
-        boolean result = true;
+    public boolean updateUser(SysUser sysUser) {
         try {
-            SysUser sysUser = new SysUser();
-            BeanUtils.copyProperties(userDto,sysUser);
             sysUserRepository.save(sysUser);
             sysUserRoleRepository.deleteSysUserRolesByUserIdEquals(sysUser.getUserId());
-            List<SysUserRole> userRoles =userDto.getRoleList().stream().map(item ->{
-                SysUserRole userRole = new SysUserRole();
-                userRole.setRoleId(item);
-                userRole.setUserId(sysUser.getUserId());
-                return userRole;
-            }).collect(Collectors.toList());
+            List<SysUserRole> userRoles = getListByRoleIds(sysUser.getRoleIds(),sysUser.getUserId());
             sysUserRoleRepository.saveAll(userRoles);
-        } catch (BeansException e) {
-            result = false;
+        } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-        return result;
+        return true;
+    }
+
+    private List<SysUserRole> getListByRoleIds(String roleIds,Integer userId) throws Exception{
+        List<SysUserRole> userRoles = Arrays.stream(roleIds.split(",")).map(item ->{
+            SysUserRole userRole = new SysUserRole();
+            userRole.setUserId(userId);
+            userRole.setRoleId(Integer.parseInt(item));
+            return userRole;
+        }).collect(Collectors.toList());
+        return userRoles;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean deleteUser(Integer userId) {
-        boolean result = true;
         try {
             sysUserRepository.deleteById(userId);
             sysUserRoleRepository.deleteSysUserRolesByUserIdEquals(userId);
         } catch (Exception e) {
-            result = false;
             e.printStackTrace();
+            return false;
         }
-        return result;
+        return true;
     }
 
     @Override
@@ -174,5 +176,47 @@ public class SysUserServiceImpl implements SysUserService {
                 .collect(Collectors.toSet());
     }
 
+    @Override
+    public Set<String> findRoleCodeByUserId(Integer userId) {
+        return sysUserRoleRepository.selectRoleCodeByUserId(userId)
+                .stream()
+                .map(item -> "ROLE_"+item)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Page<SysUser> findSysUserPage(SysUser sysUser, Integer page, Integer pageSize) {
+        Sort sort = Sort.by(Sort.Direction.DESC,"createTime"); //创建时间降序排序
+        Pageable pageable = PageRequest.of(page-1,pageSize,sort);
+        Specification specification = new Specification() {
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> pr = new ArrayList<>();
+                if(StringUtils.isNotBlank(sysUser.getUsername())){
+                    Predicate p1= criteriaBuilder.like(root.get("username"),"%"+sysUser.getUsername()+"%");
+                    pr.add(p1);
+                }
+                /*if(ObjectUtil.isNotNull(sysUser.getDeptId())){
+                    Predicate p2= criteriaBuilder.equal(root.get("deptId"),sysUser.getDeptId());
+                    pr.add(p2);
+                }*/
+                if(ObjectUtil.isNotNull(sysUser.getSysDept())){
+                    if(ObjectUtil.isNotNull(sysUser.getSysDept().getDeptId())){
+                        Predicate p2= criteriaBuilder.equal(root.get("sysDept"),sysUser.getSysDept().getDeptId());
+                        pr.add(p2);
+                    }
+                }
+                return criteriaBuilder.and(pr.toArray(new Predicate[pr.size()]));
+            }
+        };
+        Page<SysUser> sysUserPage = sysUserRepository.findAll(specification,pageable);
+        return sysUserPage;
+    }
+
+    @Override
+    public SysUser findSysUserByUserId(Integer userId) {
+        SysUser sysUser = sysUserRepository.findSysUserByUserIdIs(userId);
+        return sysUser;
+    }
 
 }

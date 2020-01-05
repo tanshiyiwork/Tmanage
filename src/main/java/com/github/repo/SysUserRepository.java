@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface SysUserRepository extends JpaRepository<SysUser,Integer>, JpaSpecificationExecutor<SysUser> {
 
     public SysUser findSysUserByUsername(String userName);
+
+    SysUser findSysUserByUserIdIs(Integer userId);
 }

@@ -1,6 +1,5 @@
 package com.github.test;
 
-import com.github.dto.UserDto;
 import com.github.service.SysDeptService;
 import com.github.service.SysUserService;
 import com.github.utils.JsonDept;
@@ -10,7 +9,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -31,21 +29,6 @@ public class SysUserServiceTest {
     @Test
     public void testInsertUser(){
         SysUserService sysUserService = (SysUserService)applicationContext.getBean("sysUserService");
-        UserDto userDto = new UserDto();
-        userDto.setUserId(1);
-        userDto.setUsername("lucy");
-        userDto.setAvatar("avatar");
-        userDto.setDelFlag("0");
-        userDto.setDeptId(1);
-        userDto.setEmail("123@qq.com");
-        userDto.setPhone("15478954565");
-        userDto.setPassword("12345");
-        List<Integer> roleList = new ArrayList<Integer>();
-        roleList.add(1);
-        roleList.add(2);
-        roleList.add(3);
-        userDto.setRoleList(roleList);
-        sysUserService.insertUser(userDto);
     }
 
     @Test

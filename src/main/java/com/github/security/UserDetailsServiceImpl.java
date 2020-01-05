@@ -42,8 +42,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // 权限集合
         Set<String> permissions = sysUserService.findPermsByUserId(user.getUserId());
         // 角色集合
-        Set<String> roleIds = sysUserService.findRoleIdByUserId(user.getUserId());
-        permissions.addAll(roleIds);
+        Set<String> roleCodes = sysUserService.findRoleCodeByUserId(user.getUserId());
+        permissions.addAll(roleCodes);
         Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(permissions.toArray(new String[0]));
         return new Tuser(user.getUserId(), username, user.getPassword(), authorities);
     }

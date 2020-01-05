@@ -31,6 +31,21 @@
                 panelWidth: 'auto',//宽度自适应
                 onSelect:function (node) {
                     $("#deptId").val(node.id);
+                },onLoadSuccess:function (node, data) {
+                    var deptId = '${sysUser.sysDept.deptId}';
+                    var lockFlag = '${sysUser.lockFlag}';
+                    if(deptId != ''){
+                        $('#deptTree').combotree('setValue',deptId);
+                    }
+                    if(lockFlag != ''){
+                        $("#lockFlag").val(lockFlag);
+                        if(lockFlag == '1'){
+                            $("#lockInput").prop("checked", false);
+                            layui.form.render();
+                        }
+                    }else{
+                        $("#lockFlag").val('0');
+                    }
                 }
 
             });
@@ -47,19 +62,34 @@
                 onChange:function(){
                     var value =  $("#roleBox").combobox('getValues');
                     $("#roleIds").val(value);
+                },onLoadSuccess:function () {
+                    var roleIds = '${roleIds}';
+                    if(roleIds!=''){
+                        var idsObj = JSON.parse(roleIds);
+                        $('#roleBox').combobox('setValues', idsObj);
+                    }
                 }
             })
         }
         layui.use(['form'], function(){
             var form = layui.form;
+            form.on('switch(oneChoose)', function (data) {
+                if(data.elem.checked){//正常
+                    $("#lockFlag").val("0");
+                }else{//锁定
+                    $("#lockFlag").val("1");
+                }
+                console.log(data.elem.checked); //是否被选中，true或者false
+                console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+            });
             //监听提交
             form.on('submit(roleInfo)', function(data){
-                /*$.ajax({
+                $.ajax({
                     type: 'post',
                     dataType:'json',
                     async: true,
                     data: data.field,
-                    url:"/role/saveOrUpdate.do",
+                    url:"/user/saveOrUpdate.do",
                     beforeSend: function () {//这里是全局事件
                         showloading(true);
                     },
@@ -81,7 +111,7 @@
                         showloading(false);
                         layer.msg('保存失败！',{icon:1,time:2000});
                     }
-                });*/
+                });
                 return false;
             });
         });
@@ -110,25 +140,25 @@
                 <label class="layui-form-label">部门：</label>
                 <div class="layui-input-inline">
                     <input class="easyui-combotree" id="deptTree" style="width:200px;">
-                    <input type="hidden" name="deptId" id="deptId" value="${sysUser.deptId}">
+                    <input type="hidden" name="sysDept.deptId" id="deptId" value="${sysUser.sysDept.deptId}">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">角色：</label>
                 <div class="layui-input-inline">
                     <input id="roleBox" class="easyui-combobox">
-                    <input type="hidden" id="roleIds" name="roleIds" value="${sysUser.phone}">
+                    <input type="hidden" id="roleIds" name="roleIds" value="${roleIds}">
                 </div>
                 <label class="layui-form-label">状态：</label>
                 <div class="layui-input-inline">
-                    <input type="checkbox" checked="" name="open" lay-skin="switch" lay-filter="switchTest" title="开关">
+                    <input type="checkbox" id="lockInput" checked="" lay-skin="switch" lay-filter="oneChoose" name="open" lay-text="正常|锁定">
+                    <input type="hidden" id="lockFlag" name="lockFlag">
                 </div>
             </div>
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <div style="margin-left: 25%">
                         <input class="layui-btn" type="button" lay-submit lay-filter="roleInfo" value="保存">
-                        <button type="reset" class="layui-btn">重置</button>
                         <button class="layui-btn" type="button" onclick="closeIframe()">关闭</button>
                     </div>
                 </div>
