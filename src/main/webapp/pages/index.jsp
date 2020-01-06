@@ -6,7 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib uri="http://www.springframework.org/security/tags" prefix="security"%>
 <html>
 <head>
     <title></title>
@@ -50,7 +49,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="../assets/img/user.png" class="img-circle" alt="Avatar"> <span><security:authentication property="principal.username"/></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
                         <ul class="dropdown-menu">
-                            <li><a href="<%=basePath%>pages/personal.jsp" target="mainIframe"><i class="lnr lnr-user"></i> <span>个人中心</span></a></li>
+                            <li><a href="<%=basePath%>toPersonalInfo" target="mainIframe"><i class="lnr lnr-user"></i> <span>个人中心</span></a></li>
                             <li><a href="#"><i class="lnr lnr-envelope"></i> <span>系统信息</span></a></li>
                             <li><a href="#"><i class="lnr lnr-cog"></i> <span>系统设置</span></a></li>
                             <li><a href="<%=basePath%>logout"><i class="lnr lnr-exit"></i> <span>注销</span></a></li>

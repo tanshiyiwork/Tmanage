@@ -8,6 +8,7 @@ import com.github.entity.SysRole;
 import com.github.entity.SysUser;
 import com.github.service.SysUserRoleService;
 import com.github.service.SysUserService;
+import com.github.utils.Tutil;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -99,6 +100,25 @@ public class SysUserController {
         if(result){
             jsonMap.put("code","200");
         }else{
+            jsonMap.put("code","500");
+        }
+        return jsonMap;
+    }
+
+    @RequestMapping("/updatePassword")
+    @ResponseBody
+    public Map<String, Object> updatePassword(String newPassword,SysUser sysUser){
+        Map<String, Object> jsonMap = new HashMap<>();
+        try {
+            SysUser oldSysuser = sysUserService.findSysUserByUserId(sysUser.getUserId());
+            if(Tutil.matches(sysUser.getPassword(),oldSysuser.getPassword())){
+                sysUserService.updateUserPassword(newPassword,sysUser.getUserId());
+                jsonMap.put("code","200");
+            }else{//原密码有误
+                jsonMap.put("code","300");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
             jsonMap.put("code","500");
         }
         return jsonMap;

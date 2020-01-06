@@ -84,4 +84,6 @@ public interface SysUserService {
 
     SysUser findSysUserByUserId(Integer userId);
 
+    void updateUserPassword(String newPassword, Integer userId) throws Exception;
+
 }

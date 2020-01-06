@@ -219,4 +219,11 @@ public class SysUserServiceImpl implements SysUserService {
         return sysUser;
     }
 
+    @Override
+    public void updateUserPassword(String newPassword, Integer userId) throws Exception{
+        SysUser sysUser = sysUserRepository.findSysUserByUserIdIs(userId);
+        sysUser.setPassword(Tutil.encode(newPassword));
+        sysUserRepository.save(sysUser);
+    }
+
 }

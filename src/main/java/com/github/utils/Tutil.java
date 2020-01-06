@@ -22,6 +22,17 @@ public class Tutil {
     }
 
     /**
+     * 将密码明文与密文进行比对
+     * @param rawPass
+     * @param encodedPassword
+     * @return
+     */
+    public boolean matches(String rawPass,String encodedPassword){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.matches(rawPass,encodedPassword);
+    }
+
+    /**
      * 判断菜单是否存在
      *
      * @param sysMenus
