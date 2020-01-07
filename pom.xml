@@ -8,6 +8,7 @@
     <artifactId>Tmanage</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>Tmanage</name>
+    <packaging>war</packaging>
     <description>Tmanage基于Spring、Spring Security的RBAC权限管理系统</description>
 
     <properties>

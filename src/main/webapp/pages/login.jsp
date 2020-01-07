@@ -38,7 +38,7 @@
         <div class="vertical-align-middle">
             <div class="auth-box ">
                 <div class="left">
-                    <div class="content">
+                    <div class="content" style="float:left;margin-top: 50px;">
                         <div class="header">
                             <div class="logo text-center"><img src="../assets/img/logo-dark.png" alt="Klorofil Logo"></div>
                             <p class="lead">系统登录</p>
